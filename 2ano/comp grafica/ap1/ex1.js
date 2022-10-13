@@ -8,9 +8,6 @@ function repete(x,n){
     return result;
 }
 
-//console.log(repete(3, 5));
-
-
 
 function pares(x){
 
