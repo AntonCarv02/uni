@@ -41,6 +41,7 @@ int createArr()
     puts("\nIntroduza um valor: ");
 
     scanf("%d", &a);
+
     return a;
 }
 
@@ -56,19 +57,30 @@ void printArr(int arr[], int size)
 
 void Arrdots(int dots[], int arr[], int s, int size)
 {
-    int count;
+    int count, value;
+    int j = 0;
+    
+    
     for (int i = 0; i <= s; i++)
     {
         count = 0;
-        for (int j = 0; j < size; j++)
+        while (j < size)
         {
-            if ((arr[j] / 10) == i)
+            value = (arr[j] / 10);
+            if (value == i)
             {
                 count++;
+                j++;
+            }
+            else
+            {
+                break;
             }
         }
         dots[i] = count;
+        int hahahahaha= arr[0];
     }
+    
 
     // find max
     int max = dots[0];
@@ -84,27 +96,49 @@ void Arrdots(int dots[], int arr[], int s, int size)
     {
         dots[i] = max - dots[i];
     }
+    
 }
 
 int main(int argc, char const *argv[])
+
 {
 
     int leaf1, leaf2, stem1, stem2, stemcheck = -1;
 
     int a = createArr();
+
+    int cnt = 0;
+
+    if (a == 0)
+    {
+        a = 1;
+        cnt = 1;
+    }
+
     int arr[a];
+    arr[0] = 0;
+
+    if (cnt == 1)
+    {
+        a = 0;
+    }
 
     recebeValores(arr, a);
     orderArray(arr, a);
     // printArr(arr, a);
 
     int b = createArr();
+
     int arr2[b];
 
     recebeValores(arr2, b);
     orderArray(arr2, b);
     // printArr(arr2, b);
 
+    if (cnt == 1)
+    {
+        a = 1;
+    }
     int size;
     if (arr[a - 1] / 10 > arr2[b - 1] / 10)
     {
@@ -115,10 +149,10 @@ int main(int argc, char const *argv[])
         size = arr2[b - 1] / 10;
     }
 
-    int arrdots[size];
+    int arrdots[size+1];
     Arrdots(arrdots, arr2, size, b);
-    printf(".");
-    printArr(arrdots, size);
+
+    // printArr(arrdots, size);
 
     int j = 0, k = 0;
     for (int i = 0; i <= size; i++)
@@ -143,6 +177,7 @@ int main(int argc, char const *argv[])
                 stem2 = arr2[k + 1] / 10;
                 k++;
             }
+
             printf(" .|%d|. ", i);
 
             while (stem1 == i)
