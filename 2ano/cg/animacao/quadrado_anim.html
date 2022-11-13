@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="utf8">
+    <title>animated</title>
+    <script type='application/javascript' 
+            src='../lib/tweenjs/dist/tween.umd.js'>
+        </script>
+        <script>
+       
+function draw(context, model) {
+    context.fillStyle = "darkblue";
+    context.fillRect(0, 0, 500, 500);
+    context.fillStyle = "crimson";
+    context.fillRect(model.x, model.y, 40, 40);
+}
+
+function update(context, model) {
+    draw(context, model);
+    requestAnimationFrame(function() {
+        update(context, model);
+    });
+    TWEEN.update();
+}
+
+function show_tween() {
+    let context = document
+        .getElementById("AnimCanvas")
+        .getContext("2d");
+    let model = { x:10, y:10};
+
+    let tween = new TWEEN.Tween(model)
+        .to({x:450}, 1500)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .delay(1000)
+        .yoyo(false)
+        .repeat(Infinity);
+    tween.start();
+
+    let tween1 = new TWEEN.Tween(model)
+        .to({ y:450}, 1500)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .yoyo(true)
+       
+        .repeat(Infinity);
+    tween1.start();
+
+
+
+    requestAnimationFrame(function() {
+        update(context, model);
+    });
+    }
+
+
+    
+    </script>
+    
+</head>
+
+<body>
+    <canvas id="AnimCanvas" width="500" height="500">
+        <script>
+            show_tween();
+        </script>
+    </canvas>
+
+</body>
+</html>
