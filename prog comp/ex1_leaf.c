@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <math.h>
 
+
 void orderArray(int arr[], int a)
 {
 
@@ -24,6 +25,7 @@ void orderArray(int arr[], int a)
     }
 }
 
+
 void recebeValores(int arr[], int a)
 {
     int b;
@@ -35,6 +37,7 @@ void recebeValores(int arr[], int a)
     }
 }
 
+
 int createArr()
 {
     int a;
@@ -44,6 +47,7 @@ int createArr()
 
     return a;
 }
+
 
 void printArr(int arr[], int size)
 {
@@ -55,12 +59,12 @@ void printArr(int arr[], int size)
     }
 }
 
+
 void Arrdots(int dots[], int arr[], int s, int size)
 {
     int count, value;
     int j = 0;
-    
-    
+
     for (int i = 0; i <= s; i++)
     {
         count = 0;
@@ -78,9 +82,9 @@ void Arrdots(int dots[], int arr[], int s, int size)
             }
         }
         dots[i] = count;
-        int hahahahaha= arr[0];
+        int hahahahaha = arr[0];
     }
-    
+
 
     // find max
     int max = dots[0];
@@ -96,8 +100,33 @@ void Arrdots(int dots[], int arr[], int s, int size)
     {
         dots[i] = max - dots[i];
     }
-    
 }
+
+
+void pontosStem(int i, int size)
+{
+
+    int potencia10 = 0,pot10ind=0,ind=i;
+
+    while ((size ) >= 10)
+    {
+        potencia10++;
+        size = (size / 10);
+    }
+
+    while ((ind) >= 10)
+    {
+        pot10ind++;
+        ind = (ind / 10);
+    }
+     printf("|");
+    for(int j=0;j<(potencia10-pot10ind);j++){
+        printf(".");
+    }
+    printf("%d|.",i);
+}
+
+
 
 int main(int argc, char const *argv[])
 
@@ -149,7 +178,7 @@ int main(int argc, char const *argv[])
         size = arr2[b - 1] / 10;
     }
 
-    int arrdots[size+1];
+    int arrdots[size + 1];
     Arrdots(arrdots, arr2, size, b);
 
     // printArr(arrdots, size);
@@ -177,11 +206,23 @@ int main(int argc, char const *argv[])
                 stem2 = arr2[k + 1] / 10;
                 k++;
             }
-
-            printf(" .|%d|. ", i);
+            // pode ser melhor
+            pontosStem(i,size);
+            /*if ((i < 10) || (size < 10 * 10))
+            {
+                printf(".|.%d|.", i);
+            }
+            else
+            {
+                printf(".|%d|.", i);
+            }*/
 
             while (stem1 == i)
             {
+                if (cnt == 1)
+                {
+                    break;
+                }
                 leaf1 = (arr[j] % 10);
                 printf("%d", leaf1);
                 stem1 = arr[j + 1] / 10;
