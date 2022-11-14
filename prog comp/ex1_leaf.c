@@ -136,18 +136,18 @@ int main(int argc, char const *argv[])
 
     int a = createArr();
 
-    int cnt = 0;
+    int verifVazioArr = 0;
 
     if (a == 0)
     {
         a = 1;
-        cnt = 1;
+        verifVazioArr = 1;
     }
 
     int arr[a];
     arr[0] = 0;
 
-    if (cnt == 1)
+    if (verifVazioArr == 1)
     {
         a = 0;
     }
@@ -164,7 +164,7 @@ int main(int argc, char const *argv[])
     orderArray(arr2, b);
     // printArr(arr2, b);
 
-    if (cnt == 1)
+    if (verifVazioArr == 1)
     {
         a = 1;
     }
@@ -219,7 +219,7 @@ int main(int argc, char const *argv[])
 
             while (stem1 == i)
             {
-                if (cnt == 1)
+                if (verifVazioArr == 1)
                 {
                     break;
                 }
