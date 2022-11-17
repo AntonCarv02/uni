@@ -1,9 +1,25 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <stdbool.h>
-#include <math.h>
 
+void orderArray2(int arr[], int a)
+{
+
+    int aux1, aux2;
+    for (int i = 0; i < a; i++)
+    {
+        for (int j = i + 1; j < a; j++)
+        {
+            aux1 = arr[i];
+            aux2 = arr[j];
+
+            if (((aux2 > aux1) && (aux1 / 10 == aux2 / 10)))
+            {
+                arr[i] = aux2;
+                arr[j] = aux1;
+            }
+            
+        }
+    }
+}
 
 void orderArray(int arr[], int a)
 {
@@ -25,7 +41,6 @@ void orderArray(int arr[], int a)
     }
 }
 
-
 void recebeValores(int arr[], int a)
 {
     int b;
@@ -37,18 +52,16 @@ void recebeValores(int arr[], int a)
     }
 }
 
-
 int createArr()
 {
     int a;
-    puts("\nIntroduza um valor: ");
+    // puts("\nIntroduza um valor: ");
 
     scanf("%d", &a);
 
     return a;
 }
-
-
+/*
 void printArr(int arr[], int size)
 {
     // printf("size %d", (size));
@@ -58,12 +71,12 @@ void printArr(int arr[], int size)
         printf("%d\n", arr[i]);
     }
 }
-
-
+*/
 void Arrdots(int dots[], int arr[], int s, int size)
 {
     int count, value;
     int j = 0;
+    int max = 0;
 
     for (int i = 0; i <= s; i++)
     {
@@ -82,17 +95,10 @@ void Arrdots(int dots[], int arr[], int s, int size)
             }
         }
         dots[i] = count;
-        int hahahahaha = arr[0];
-    }
 
-
-    // find max
-    int max = dots[0];
-    for (int i = 1; i <= s; i++)
-    {
-        if (dots[i] > max)
+        if (count > max)
         {
-            max = dots[i];
+            max = count;
         }
     }
 
@@ -102,13 +108,12 @@ void Arrdots(int dots[], int arr[], int s, int size)
     }
 }
 
-
 void pontosStem(int i, int size)
 {
 
-    int potencia10 = 0,pot10ind=0,ind=i;
+    int potencia10 = 0, pot10ind = 0, ind = i;
 
-    while ((size ) >= 10)
+    while ((size) >= 10)
     {
         potencia10++;
         size = (size / 10);
@@ -119,20 +124,22 @@ void pontosStem(int i, int size)
         pot10ind++;
         ind = (ind / 10);
     }
-     printf("|");
-    for(int j=0;j<(potencia10-pot10ind);j++){
+
+    printf(".|");
+
+    for (int j = 0; j < (potencia10 - pot10ind); j++)
+    {
         printf(".");
     }
-    printf("%d|.",i);
+
+    printf("%d|.", i);
 }
-
-
 
 int main(int argc, char const *argv[])
 
 {
 
-    int leaf1, leaf2, stem1, stem2, stemcheck = -1;
+    int leaf1, leaf2, stem1, stem2;
 
     int a = createArr();
 
@@ -145,16 +152,16 @@ int main(int argc, char const *argv[])
     }
 
     int arr[a];
-    arr[0] = 0;
 
     if (verifVazioArr == 1)
     {
+        arr[0] = 0;
         a = 0;
     }
 
     recebeValores(arr, a);
     orderArray(arr, a);
-    // printArr(arr, a);
+    //printArr(arr, a);
 
     int b = createArr();
 
@@ -162,8 +169,9 @@ int main(int argc, char const *argv[])
 
     recebeValores(arr2, b);
     orderArray(arr2, b);
-    // printArr(arr2, b);
-
+    orderArray2(arr2, b);
+    //printArr(arr2, b);
+    
     if (verifVazioArr == 1)
     {
         a = 1;
@@ -206,16 +214,8 @@ int main(int argc, char const *argv[])
                 stem2 = arr2[k + 1] / 10;
                 k++;
             }
-            // pode ser melhor
-            pontosStem(i,size);
-            /*if ((i < 10) || (size < 10 * 10))
-            {
-                printf(".|.%d|.", i);
-            }
-            else
-            {
-                printf(".|%d|.", i);
-            }*/
+
+            pontosStem(i, size);
 
             while (stem1 == i)
             {
