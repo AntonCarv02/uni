@@ -17,17 +17,17 @@ public class ExercicePets {
         String name = input.substring(2);
         
         
-        if(Character.compare(species, 'd')==0){
+        if((Character.compare(species, 'd')==0) && (Character.compare(spc, ' ')==0)){
 
             Pet pet = new Pet(species, name);
             lista.add(pet);
 
-        }else if(Character.compare(species, 'c')==0){
+        }else if((Character.compare(species, 'c')==0)&&(Character.compare(spc, ' ')==0)){
 
             Pet pet = new Cat(species, name);
             lista.add(pet);
         }
 
-        
+        s.close();
     }
 }
