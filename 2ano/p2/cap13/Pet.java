@@ -4,7 +4,7 @@ public class Pet {
     protected String name;
     protected char species;
 
-    protected Pet(char species, String name) {
+    public Pet(char species, String name) {
         setSpecies(species);
         setName(name);
     }

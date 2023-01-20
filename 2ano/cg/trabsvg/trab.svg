@@ -21,20 +21,11 @@
 
 
         <g id="onda">
-        <!path d="M 50 0 
-        q 40   75  -15 150        
-        q -40  75   -15 150        
-        q 40   75  -15  150
-        q -40  75   0 150       
-        q 40   75  0 150
-        q -40  75   15 150
-        q 40   75  10 175 
-        q -30  55   15 150" stroke-width="20" fill="transparent" stroke="white" />
-            
+        
             <rect x="0" y="0" width="30" height="400" fill="white">
                 <animateTransform attributeName="transform" attributeType="cx" type="translate"
                     values="40, 0; 0, 0; 40, 0" dur="3s" repeatCount="indefinite" />
-
+            </rect>
 
         </g>
 
