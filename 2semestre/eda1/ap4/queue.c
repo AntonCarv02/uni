@@ -93,6 +93,6 @@ ElementType Dequeue( Queue Q ){
         perror("vazia");
     }
     ElementType X = Q->Array[Q->Front];
-    successor(Q->Front, Q);
+    //successor(Q->Front, Q);
     return X;
 }
