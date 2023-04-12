@@ -6,8 +6,9 @@ typedef int ElementType;
 
 struct Node;
 typedef struct Node *PtrToNode;
-typedef PtrToNode List;
 typedef PtrToNode Position;
+
+typedef struct DList *List;
 
 List CreateList(List L);
 bool IsEmptyList( List L );
