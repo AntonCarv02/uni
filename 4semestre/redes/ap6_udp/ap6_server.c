@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <time.h>
+#include "ap6_server.h"
 
 int main(int argc, char const *argv[])
 {

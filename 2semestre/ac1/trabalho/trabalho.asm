@@ -73,7 +73,7 @@ read_rgb_image:
   	mv   s6, a0       
   
   	# read image just opened
-  	li   a7, 63       
+  	li   a7, 63
   	la   a1, buffer
   	li   a2, 786432 
   
