@@ -1,6 +1,7 @@
-package Redes;
+package trabalho;
 
 import java.net.*;
+import java.util.ArrayList;
 import java.io.*;
  
 public class Server
@@ -9,9 +10,10 @@ public class Server
     private Socket          socket   = null;
     private ServerSocket    server   = null;
     private DataInputStream in       =  null;
-    public static final String ANSI_YELLOW = "\u001B[33m";
+    public static final String ANSI_ORANGE = "\u001B[38;5;208m";
     public static final String ANSI_RESET = "\u001B[0m";
- 
+    private ArrayList<String> Logins = new ArrayList<String>();
+
     // constructor with port
     public Server(int port)
     {
@@ -19,12 +21,9 @@ public class Server
         try
         {
             server = new ServerSocket(port);
-            System.out.println("Server started");
- 
-            System.out.println("Waiting for a client ...");
- 
+           
             socket = server.accept();
-            System.out.println("Client accepted");
+            System.out.println(ANSI_ORANGE+"Client accepted"+ANSI_RESET);
  
             // takes input from the client socket
             in = new DataInputStream(
@@ -40,7 +39,7 @@ public class Server
                     line = in.readUTF().split(" ");
                     if(line[0]!= "IAM")
                     {
-                        System.out.println("HELLO" + line[1]);
+                        System.out.println(ANSI_ORANGE+ "HELLO" + line[1]+ ANSI_RESET);
                     }
  
                 }
@@ -60,7 +59,10 @@ public class Server
             System.out.println(i);
         }
     }
- 
+
+
+
+    
     public static void main(String args[])
     {
         Server server = new Server(5001);

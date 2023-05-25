@@ -1,4 +1,4 @@
-package Redes;
+package trabalho;
 
 // A Java program for a Client
 import java.io.*;
@@ -7,7 +7,7 @@ import java.net.*;
 public class Client {
     // initialize socket and input output streams
     private Socket socket = null;
-    private DataInputStream input = null;
+    BufferedReader input= new BufferedReader(new InputStreamReader(System.in));
     private DataOutputStream out = null;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLUE= "\u001B[34m";
@@ -18,11 +18,10 @@ public class Client {
         // establish a connection
         try {
             socket = new Socket(address, port);
-            System.out.println("Connected");
+            
  
             // takes input from terminal
-            input = new DataInputStream(System.in);
- 
+        
             // sends output to the socket
             out = new DataOutputStream(
                 socket.getOutputStream());
@@ -52,7 +51,7 @@ public class Client {
         }
  
         // close the connection
-        try {
+        try {                                                                                                                            
             input.close();
             out.close();
             socket.close();

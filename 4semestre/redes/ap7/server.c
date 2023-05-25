@@ -15,7 +15,7 @@ int main(int argc, char const* argv[])
     int sockfd, connfd, udpfd, nready, maxfdp1;
     char buffer[MAXLINE];
     pid_t childpid;
-    struct fd_set rset;
+    struct 
     ssize_t n;
     socklen_t len;
     const int on = 1;
