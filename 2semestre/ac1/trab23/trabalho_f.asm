@@ -1,9 +1,9 @@
 .globl main
 .data
-fin:   .asciz "/home/antonio/Documentos/uni/2semestre/ac1/trab23/starwars.rgb"		# filename for input
-fout: .asciz "/home/antonio/Documentos/uni/2semestre/ac1/trab23/starwars2.rgb"	# filename for output
-
+fin:   .asciz "/home/antonio/Documentos/uni/2semestre/ac1/trab23/starwars.rgb"        # filename for input
+fout: .asciz "/home/antonio/Documentos/uni/2semestre/ac1/trab23/starwars2.rgb"    # filename for output
 msg: .asciz "Diga que personagem pretende: 1-Yoda / 2-Darth Maul / 3-Mandalorian \n"
+
 buffer: .space 172800
 arr: .space 23
 
@@ -11,16 +11,17 @@ arr: .space 23
 .text
 
 #############################################
-#
-#
-#
+# Funcao: show_msg
+# Descricao: permite ler do terminal a personagem escolhida 
+# Argumentos:
+# a0 - endereço da mensagem
 #
 ###############################################
 
 
 show_msg:
+	
 	li a7, 4
-	la a0, msg
 	
 	ecall 
 	
@@ -33,10 +34,8 @@ ret
 
 
 #############################################
-#
-#
-#
-#
+# Funcao: main
+# Descricao: função principal, corre um loop para percorrer os pixeis e cria a imagem final
 ###############################################
 
 
@@ -45,9 +44,11 @@ main:
 	addi sp, sp, -4
 	sw ra, 0(sp)
 	
+	la   a0, fin 	
+  	la   a1, buffer
 	jal read_rgb_image
 	
-	
+	la a0, msg
 	jal show_msg
 	
 	addi sp, sp, -4
@@ -55,9 +56,9 @@ main:
 	
 	la a0, buffer
 	li t0, 172800
-	mv s0, a0
+	
 	#while(<172800)	
-while:	beqz t0, BRANCH
+	while:	beqz t0, BRANCH
 		
 		addi sp, sp, -4
 		sw t0, 0(sp)
@@ -71,14 +72,11 @@ while:	beqz t0, BRANCH
 		mv a1, a0
 		
 		lw a0, 8(sp)
-		#a0 - personagem 
-		#a1 - hue 
-		#a2 - arr
+		
 		la a2, arr
-		mv a3, t0
-		lw a4, 0(sp)
+		#lw a4, 0(sp)
+		
 		jal location
-	
 	
 		
 		lw a0, 0(sp)
@@ -89,16 +87,23 @@ while:	beqz t0, BRANCH
 		addi t0, t0, -3
 	
 		j while
+		
 	BRANCH:
+
+
+
 	la a0, buffer
 	la a1, arr
 	
 	jal draw_centro
 	
+	la   a0, fout 
+ 	la   a1, buffer
 	jal write_rgb_image
 	
 	lw ra, 0(sp)
 	addi sp, sp, 4
+
 ret
 
 
@@ -106,15 +111,17 @@ ret
 
 ######################################################
 # Funcao: read_rgb_image
-# Descricao: Esta funcao carrega para a memória os bytes dos pixeis da imagem
+# Descricao: Esta funcao carrega para a memória os bytes dos pixeis da imagem.
 # Argumentos:
-
+#	a0 - imagem original
+#	a1 - buffer
 ######################################################
 
 read_rgb_image:
 	
-	li   a7, 1024     
-  	la   a0, fin   
+	addi sp, sp, -4
+	sw a1, 0(sp)
+	li   a7, 1024       
   	li   a1, 0        
   	ecall             
   	
@@ -122,18 +129,15 @@ read_rgb_image:
 	sw a0, 0(sp)
   
   
-  	
+	lw a1, 4(sp)
   	li   a7, 63
-  	lw a0, 0(sp)
-  	la   a1, buffer
   	li   a2, 172800 
   	ecall # read image opened
-  	
-  
+
   	li   a7, 57
   	lw a0, 0(sp)
 
-	addi sp, sp, 4  
+	addi sp, sp, 8 
   	
   	ecall        
 	
@@ -141,44 +145,49 @@ read_rgb_image:
 
 
 
-
-
 ######################################################
 # Funcao: write_rgb_image
-# Descricao: Esta funcao escreve para a memória os bytes dos pixeis da imagem
+# Descricao: Escreve os bytes do buffer para a imagem.
 # Argumentos:
-
+#	a0 - Localização da imagem original
+#	a1 - buffer
 ######################################################
 
 write_rgb_image:
-	li   a7, 1024     
- 	la   a0, fout    
+	
+	addi sp, sp, -4
+	sw a1, 0(sp)
+	li   a7, 1024        
  	li   a1, 1       
  	ecall
  	
- 	
-	mv t0, a0
-	
-	#write image 
+	addi sp, sp, -4
+	sw a0, 0(sp)
+	#write image
+	 
+ 	lw a1, 4(sp)
  	li   a7, 64       
-  	mv a0, t0
- 	la   a1, buffer
   	li   a2, 172800
   	
  	ecall
  	
  	li   a7, 57       
-  	mv a0, t0
+  	lw a0, 0(sp)
+  	
+  	addi sp, sp, 8
   	   
   	ecall        
- 	ret    
+ret    
 
 
 
 ######################################################
 # Funcao: hue
-# Descricao: 
+# Descricao: Tem como finalidade calcular o valor hue com base nos valores de R, G, B fornecidos
 # Argumentos:
+#	a0 - endereço do buffer da imagem
+# Retorna:
+#	a0 - valor da hue para o pixel atual
 
 ######################################################
 
@@ -264,16 +273,19 @@ hue:
 	lw ra, 0(sp)
 	addi sp, sp, 4
 	
-	ret
+ret
 
 
 
 
 ######################################################
-# Funcao: hue
-# Descricao: 
-# Argumentos:a0 --> valor de hue
-
+# Funcao: indicator
+# Descricao: Indica se o pixel atual pertence à personagem
+# Argumentos:
+#	a0 - personagem escolhida
+#	a1 - valor da hue
+# Retorna:
+#	a0 - valor 0/1 que indica se o pixel atual pertence à personagem
 ######################################################
 
 indicator:
@@ -288,7 +300,7 @@ indicator:
 	SEGUE1:
   	li t0, 40
   	li t1, 80	
-    	blt a1, t0, STOP   #
+    	blt a1, t0, STOP   
 	bge t1, a1, CONTA
 	j STOP
 
@@ -315,15 +327,17 @@ indicator:
        	li a0, 1
 
 	END:
-	ret # pertence 1 ou 0
+ret # pertence 1 ou 0
 
 
 
 ######################################################
-# Funcao: hue
-# Descricao: 
+# Funcao: location
+# Descricao: Para o pixel atual calcula se pertencer à personagem incrementa os valores do cx e cy com os valores de x e y atuais.
 # Argumentos:
-
+#	a0 - personagem escolhida
+#	a1 - valor da hue
+#	a2 - endereço do array para o calculo do centro de massa
 
 ######################################################
 
@@ -338,7 +352,7 @@ location:
 	lw t0, 3(a2) 	#N
 	lw t1, 7(a2)	#x
 	lw t2, 11(a2)	#y
-	lw  t3, 15(a2) 	#cx
+	lw t3, 15(a2) 	#cx
 	lw t4, 19(a2)	#cy
 	
 
@@ -346,7 +360,7 @@ location:
 
 	
 	for:
-    	beq t6, t2, end_for_coluna
+    	beq t6, t1, end_for_linha
     
     		beqz  a0, branchI
     			
@@ -354,19 +368,22 @@ location:
     			add t3, t3, t1
     			add t4, t4, t2  
     				  						
-			sw t0, 3(a2) 	#N
-			sw  t3, 15(a2) 	#cx
-			sw  t4, 19(a2)	#cy
-			
+				sw t0, 3(a2) 	#N
+				sw  t3, 15(a2) 	#cx
+				sw  t4, 19(a2)	#cy	
+						
+											#j black
 		branchI:
-		
-    		addi t2, t2, 1    
-    		j end_for
+											#sb zero, 0(a4)
+    			addi t1, t1, 1 							#sb zero, 1(a4)   
+    			j end_for							#sb zero, 2(a4)
+    			
+											#black:
 
-	end_for_coluna:
-	li t2,  0   
-    	addi t1, t1, 1 
-	j for	     
+	end_for_linha:
+		li t1,  0   
+    	addi t2, t2, 1 
+		j for	     
     
     
 	end_for:
@@ -376,16 +393,7 @@ location:
 	sw t1, 7(a2)	#x
 	sw t2, 11(a2)	#y
 	
-	
-	
-	li t1, 3
-	bne a3, t1, end
-		div t3, t3, t0
-		div t4, t4, t0
-	
-		sw t3, 15(a2) 	#cx
-		sw t4, 19(a2)	#cy
-	end:
+
 	
 	lw ra, 0(sp)
 	addi sp, sp, 4
@@ -394,68 +402,78 @@ location:
 ret
 
 ######################################################
-# Funcao: hue
-# Descricao: 
+# Funcao: draw_centro
+# Descricao: encontra o centro de massa e pinta a mira no centro de massa.
 # Argumentos:
+#	a1 - endereço do array para o calculo do centro de massa
+#	a0 - endereço do buffer da imagem
 
 ######################################################
 
 
 draw_centro:
 
+
 	lw t0, 15(a1) 	#cx
 	lw t1, 19(a1)	#cy
-	
-cont:	
-	beqz t0, ciclo
+	lw t2 , 3(a1)	#N
+
+	div t0, t0, t2
+	div t1, t1, t2
+
+	find:	
+	beqz t1, ciclo
 
 		addi a0, a0, 960
-		addi t0, t0, -1
-		j cont
+		addi t1, t1, -1
+		j find
 	ciclo:
-	
-cont2:	beqz t1, ciclo2
+
+	find2:	
+	beqz t0, ciclo2
 
 		addi a0, a0, 3
-		addi t1, t1, -1
-		j cont2
+		addi t0, t0, -1
+		j find2
 	ciclo2:
-	
-	
-			
-	##mira a volta do ponto (a0) para vermelho 
+
 	
 	addi sp, sp, -4
 	sw a0, 0(sp)
-	
+
+	##		
+	## alterar os pixeis a volta do ponto (a0) para vermelho 
+	##
+
+
 	li t3, 255
-	
 	
 	li t2, 4800
 	sub a0, a0, t2
 	slli t2, t2,1
+
 	
-	
-	
-miracicle:
+	miracicle:
 	bltz  t2,ciclomira
-	li t4, 1
-mira:	beqz t4, cicle
+
+		li t4, 1
+		mira:	beqz t4, cicle
 		
-		sb t3, 0(a0)
-		sb zero, 1(a0)
-		sb zero, 2(a0)
-		addi t4, t4, -1
-		addi a0, a0, 3
-		addi t2, t2, -3
-		j mira
-cicle:	
-	addi t2, t2, -957
-	addi a0, a0, 957
-	j miracicle
-	
-	
-ciclomira:			
+			sb t3, 0(a0)
+			sb zero, 1(a0)
+			sb zero, 2(a0)
+
+			addi t4, t4, -1
+			addi a0, a0, 3
+			addi t2, t2, -3
+			j mira
+
+		cicle:	
+			addi t2, t2, -957
+			addi a0, a0, 957
+
+		j miracicle
+	ciclomira:			
 	
 	
 	
@@ -467,7 +485,7 @@ ciclomira:
 	addi t2, t2, 1
 	
 	
-mira_hor:
+	mira_hor:
 	bltz t2, fim_hor
 		
 		sb t3, 0(a0)
@@ -486,5 +504,4 @@ mira_hor:
 	sb t3, 2(a0)
 	
 	addi sp, sp, 4
-	ret
-	
+ret

@@ -1,68 +1,49 @@
 package trabalho;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
-// A Java program for a Client
-import java.io.*;
-import java.net.*;
- 
 public class Client {
-    // initialize socket and input output streams
-    private Socket socket = null;
-    BufferedReader input= new BufferedReader(new InputStreamReader(System.in));
-    private DataOutputStream out = null;
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLUE= "\u001B[34m";
- 
-    // constructor to put ip address and port
-    public Client(String address, int port)
-    {
-        // establish a connection
+    public static void main(String[] args) {
         try {
-            socket = new Socket(address, port);
-            
- 
-            // takes input from terminal
-        
-            // sends output to the socket
-            out = new DataOutputStream(
-                socket.getOutputStream());
-        }
-        catch (UnknownHostException u) {
-            System.out.println(u);
-            return;
-        }
-        catch (IOException i) {
-            System.out.println(i);
-            return;
-        }
-        
- 
-        // string to read message from input
-        String line = "";
- 
-        // keep reading until "Over" is input
-        while (!line.equals("Over")) {
-            try {
-                line = input.readLine();
-                out.writeUTF(line);
+            Socket socket = new Socket("localhost", 5555); // Connect to the server
+            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+
+            boolean running = true;
+            while (running) {
+                // Prompt user for input
+                System.out.print("Enter your command: ");
+                String command = userInput.readLine();
+
+                if (command.equalsIgnoreCase("exit")) {
+                    System.out.println("Closing connection...");
+                    running = false;
+                    continue;
+                }
+
+                // Send command to the server
+                writer.println(command);
+
+                // Process the server's response
+                String response;
+                while ((response = reader.readLine()) != null) {
+                    System.out.println("Server response: " + response);
+                    if (response.equals("ENDQUESTIONS")) {
+                        break;
+                    }
+                }
             }
-            catch (IOException i) {
-                System.out.println(i);
-            }
-        }
- 
-        // close the connection
-        try {                                                                                                                            
-            input.close();
-            out.close();
+
+            // Close the connections
+            writer.close();
+            reader.close();
             socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException i) {
-            System.out.println(i);
-        }
-    }
- 
-    public static void main(String args[])
-    {
-        Client client = new Client("127.0.0.1", 5001);
     }
 }
