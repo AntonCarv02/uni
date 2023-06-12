@@ -2,22 +2,34 @@ package trabalho;
 
 public class Question {
 
-    public Question(int questionId, String question) {
+    private String Question;
+    private String Answer;
+    //private int ID;
+
+    public Question( String question, String answer) {
+        setQuestion(question); 
+        setAnswer(answer);
+        //setID(iD);
     }
 
-    public Object getAnswer() {
-        return null;
+    public String getQuestion() {
+        return Question;
     }
-
-    public Object getQuestion() {
-        return null;
+    public void setQuestion(String question) {
+        Question = question;
     }
-
-    public Object getId() {
-        return null;
+    public String getAnswer() {
+        return Answer;
     }
-
     public void setAnswer(String answer) {
+        Answer = answer;
     }
+    /*public int getID() {
+        return ID;
+    }
+    public void setID(int iD) {
+        ID = iD;
+    }*/
 
+    
 }

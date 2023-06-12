@@ -1,9 +1,6 @@
 package trabalho;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 public class Client {
     public static void main(String[] args) {
@@ -22,19 +19,18 @@ public class Client {
                 if (command.equalsIgnoreCase("exit")) {
                     System.out.println("Closing connection...");
                     running = false;
-                    continue;
+                    
                 }
 
                 // Send command to the server
                 writer.println(command);
 
+
                 // Process the server's response
                 String response;
                 while ((response = reader.readLine()) != null) {
-                    System.out.println("Server response: " + response);
-                    if (response.equals("ENDQUESTIONS")) {
-                        break;
-                    }
+                    System.out.println(response);
+                    
                 }
             }
 
