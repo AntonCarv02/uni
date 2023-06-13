@@ -96,6 +96,7 @@ class ClientThread extends Thread {
 
     }
 
+    @Override
     public void run() {
 
         try {
@@ -105,19 +106,19 @@ class ClientThread extends Thread {
             BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
 
-            output.print("Login...");
-            String line = input.readLine(), sublogin;
+            
+            String line = input.readLine(), sublogin,log=null;
             int i = line.indexOf(" ");
 
             do {
                 sublogin = line.substring(0, i);
-                if (sublogin.equalsIgnoreCase("iam")) {
+                if (sublogin.trim().equalsIgnoreCase("iam")) {
 
-                    handleLogin(line.substring(i));
+                    log = (handleLogin(line.substring(i)));
                 }
 
-            } while (!sublogin.equalsIgnoreCase("iam"));
-
+            } while (!sublogin.trim().equalsIgnoreCase("iam")&&log.equals(null));
+            output.println(log);
             while (true) {
 
                 // Lê e processa os dados recebidos do cliente
