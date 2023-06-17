@@ -32,111 +32,86 @@ public class Client {
                     running = false;
 
 
-                }else if (command.startsWith("PUTFILE")) {
+                }else if (command.startsWith("PUTFILE ")) {
                     
 
 
                     String[] parts = command.split(" ");
                     String filename = parts[1];
-                    File file = new File(/*FILE_DIRECTORY+ */ filename);
+                    File file = new File(FILE_DIRECTORY+  filename);
                     int fileSize = Integer.parseInt(parts[2]);
 
                     if(!file.exists()){
-                        throw new Exception("num ah fichero moh" );
-                    }
+                        System.out.println("num ah fichero moh" );
                     
-                    byte[] fileContent = new byte[fileSize];
-                    InputStream fis = new FileInputStream(file);
-
-                    
-                    int count;
-                    while((count = fis.read(fileContent))>0){
-                        writer.write(fileContent, 0, count);
-                    }
-                    
-                    
-
-                    fis.close();
-                    read = reader.read(msg);
-                    command = new String(msg, 0, read);
-                    System.out.println(command);
-                    /*else if (command.startsWith("PUTFILE")) {
-                        String[] parts = command.split(" ");
-                        String filename = parts[1];
-                    
-                        File file = new File(filename);
-                        int fileSize = (int) file.length();
-                    
-                        // Enviar comando e tamanho do arquivo para o servidor
-                        writer.println(command + " " + fileSize);
-                    
+                    }else{
                         byte[] fileContent = new byte[fileSize];
-                        try (BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
-                            bis.read(fileContent, 0, fileSize);
+                        InputStream fis = new FileInputStream(file);
+
+                        
+                        int count;
+                        while((count = fis.read(fileContent))>0){
+                            writer.write(fileContent, 0, count);
                         }
+                        
+                        
+                        fis.close();
+                        
+                    }
+                 
+
+                } else if (command.startsWith("GETFILE ")) {
                     
-                        // Enviar conteúdo do arquivo para o servidor
-                        socket.getOutputStream().write(fileContent, 0, fileSize);
-                        socket.getOutputStream().flush();
-                    } */
-
-
-
-
-                } else if (command.startsWith("GETFILE")) {
                     
-
-
                     read = reader.read(msg);
-                    String response = new String(msg, 0, read);
-                    
-                    
+                    String response = new String(msg, 0, 20);
+                    System.out.println(response);
+                     System.out.flush();
                     if(response.startsWith("FILE")){
                         
                         String[] parts= response.split(" ");
                      //   int fileIndex = Integer.parseInt(parts[1]);
-                        String filename = parts[2];
-                        int fileSize = Integer.parseInt(parts[3]);
+                        String filename = parts[2].substring(1);
+                        int fileSize = Integer.parseInt((parts[3]).trim());
 
-                        System.out.println(response);
-
-                        File file = new File(filename);
+                        
+                        File file = new File(FILE_DIRECTORY+filename);
                         FileOutputStream fos = new FileOutputStream(file);
                         
                         // Ler e salvar o conteúdo do arquivo recebido
                         byte[] fileContent = new byte[fileSize];
-                        int bytesRead;
+                        int bytesRead=0;
                         
-                        //#####
                        
 
-                        while (fileSize != fileContent.length) {
-                             bytesRead = reader.read(fileContent);
-                            fos.write(fileContent, 0, bytesRead);
-                        }
-                        //#####
-                        fos.close();
+                        bytesRead = reader.read(fileContent);
+                        fos.write(fileContent, 0, bytesRead);
                         
-
                         
                         System.out.println(fileContent.toString());
-
+                        System.out.flush();
+                        fos.close();
                     }else{
                         System.out.println("falta ERRO");
                     }
+                    
                 } 
 
                 
-                
                 // Process the server's response
-                
                 String response="";
                 read= reader.read(msg);
                 response = new String(msg, 0, read);
+                
 
-                while (!response.equals("END") ) {
+                if(response.endsWith("END")){
+                       System.out.println(response.substring(0, response.length()-4) );
+				      continue;
+                    }
+
+                while(!response.endsWith("END") ) {
                     
-                    System.out.println(response);
+                    System.out.println(response );
 				    
                     read=reader.read(msg);
                     response = new String(msg, 0, read);
@@ -150,7 +125,15 @@ public class Client {
             s.close();
             socket.close();
         } catch ( Exception e) {
+            
             e.printStackTrace();
         }
     }
 }
+
+/*
+IAM 2
+PUTFILE aa.txt 60
+GETFILE 1
+LISTFILES
+*/
