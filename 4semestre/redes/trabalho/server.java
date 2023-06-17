@@ -63,6 +63,9 @@ class ClientThread extends Thread {
     private String user = "aluno";
     private long serverstart;
 
+    private InputStream input;
+    private OutputStream output;
+
     public String getUser() {
         return user;
     }
@@ -75,7 +78,7 @@ class ClientThread extends Thread {
         return serverstart;
     }
 
-    public ClientThread(Socket clientSocket, long serverstart) {
+    public ClientThread(Socket clientSocket, long serverstart) throws IOException {
         this.clientSocket = clientSocket;
         this.serverstart = serverstart;
 
@@ -84,6 +87,9 @@ class ClientThread extends Thread {
         answerArr = new HashMap<>();
         fileNameArr = new ArrayList<>();
 
+
+        input = clientSocket.getInputStream();
+        output =clientSocket.getOutputStream();
     }
 
     public void run() {
@@ -91,11 +97,9 @@ class ClientThread extends Thread {
         try {
             // Obtém os streams de entrada e saída para comunicação com o cliente
             // Set up PrintWriter and BufferedReader here
-
-            BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-
-            String line = input.readLine(), sublogin, log = null, outtext  =null;
+            byte[] msg = new byte[1024];
+            int read= input.read(msg);
+            String line = new String(msg, 0, read), sublogin, log = null, outtext  =null;
             String[] logarr = line.split(" ");
 
             do {
@@ -107,19 +111,21 @@ class ClientThread extends Thread {
 
             } while (!sublogin.equalsIgnoreCase("iam") && log.equals(null));
 
-            output.println((log + "\nEND"));
+            output.write((log + "\nEND").getBytes());
+            output.flush();
+            
 
-            
-           while ((line = input.readLine()) != null) {
-            
-               if (line.equals("exit")) {
+            while ((read= input.read(msg)) != -1) {
+                line = new String(msg, 0, read);
+                if (line.equals("exit")) {
 
                     break;
                 }
                 outtext = processCommand(line);
                 System.out.println(outtext);
-                output.println((outtext + "\nEND"));
-            
+                output.write((outtext + "\nEND").getBytes());
+                output.flush();
+                
             }
 
             // Fecha a conexão com o cliente
@@ -158,17 +164,18 @@ class ClientThread extends Thread {
 
     private String processCommand(String command) {
         String response;
-        String parts[] = command.split(" ");
-        String commandname = parts[0];
+        int index =command.indexOf(" ");
+        String commandname = command.substring(0, index);
+        String args = command.substring( index+1);
 
         switch (commandname.toLowerCase()) {
 
             case "ask":
-                response = handleAsk(parts[1]);
+                response = handleAsk(args);
 
                 break;
             case "answer":
-                response = handleAnswer(parts[1], parts[2]);
+                response = handleAnswer(args);
                 break;
             case "listquestions":
 
@@ -177,11 +184,11 @@ class ClientThread extends Thread {
 
             case "getfile":
 
-                response = handleGetFile(Integer.parseInt(parts[1]));
+                response = handleGetFile(Integer.parseInt(args));
                 break;
             case "putfile":
                
-                response = handlePutFile(parts[1], Integer.parseInt(parts[2]));
+                response = handlePutFile(args);
                 break;
 
             case "listfiles":
@@ -192,7 +199,11 @@ class ClientThread extends Thread {
             default:
                 return ("unknown command");
         }
-
+        /*
+         * 
+         * adicionar limitador de bytes
+         * 
+         */
         return response;
     }
 
@@ -216,23 +227,32 @@ class ClientThread extends Thread {
 
     }
 
-    private String handlePutFile(String filename, int bytes) {
- 
-        File file = new File(FILE_DIRECTORY + filename);
+    private String handlePutFile(String args) {
+
+        String[] parts = args.split(" "); 
+        String filename = parts[0];
+        int bytes = Integer.parseInt(parts[1]);
+
+        File file = new File(FILE_DIRECTORY + "1"+filename);
         FileOutputStream fos = null;
         InputStream in = null;
         byte[] bytearray = new byte[bytes];
-        int totalBytesRead =0;
+        int bytestotal =0;
 
-        int bytesRead;
+        int read;
         try {
             fos = new FileOutputStream(file);
             in=clientSocket.getInputStream();
-            System.out.println("AAAAAAAAAAAAAAA");
+            System.out.println("AAAAAAAAAA");
             
-            while ((bytesRead = in.read(bytearray)) > 0 && totalBytesRead < bytes) {
-                fos.write(bytearray, 0, bytesRead);
-                totalBytesRead += bytesRead;
+            while ((read = in.read(bytearray)) > 0 && bytestotal < bytes) {
+                if(bytestotal+read>bytes){
+                    int execess  = bytestotal+read-bytes;
+                    fos.write(bytearray, 0, read-execess);
+                }else{   
+                    fos.write(bytearray, 0, read);
+                bytestotal += read;
+                }
             }
 
            
@@ -263,7 +283,8 @@ class ClientThread extends Thread {
     /*
     
     private String handlePutFile(String filename, int bytes) {
-    File file = new File(FILE_DIRECTORY + filename);
+    
+        File file = new File(FILE_DIRECTORY + filename);
     FileOutputStream fos = null;
     InputStream in = null;
 
@@ -457,9 +478,12 @@ class ClientThread extends Thread {
 
     }
 
-    private String handleAnswer(String number, String parameters) {
-
-        int questionnum = Integer.parseInt(number);
+    private String handleAnswer(String args) {
+        String[] parts = args.split(" "); 
+        String parameters = parts[1];
+        int questionnum = Integer.parseInt(parts[0]);
+        
+       
         Question question = questionArr.get(questionnum);
 
         if (question == null) {

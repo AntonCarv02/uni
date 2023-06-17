@@ -1,7 +1,7 @@
 .globl main
 .data
-in:   .asciz "/home/antonio/Documentos/uni/2semestre/ac1/pedro/starwars.rgb"        # imagem original
-final: .asciz "/home/antonio/Documentos/uni/2semestre/ac1/pedro/final.rgb"    # imagem final
+in:   .asciz "C:\Users\pedro\Desktop\trabalhoac\starwars.rgb"        # imagem original
+final: .asciz "C:\Users\pedro\Desktop\trabalhoac\final.rgb"    # imagem final
 text: .asciz "escolha a personagem: \n1-Yoda \n2-Darth Maul \n3-Mandalorian \n"
 
 buffer: .space 172800
@@ -78,13 +78,13 @@ ask_user:
 ret
 
 #####################################
-#FunÃ§Ã£o:read_rgb_image
-#DescriÃ§Ã£o: lÃª um ficheiro com uma imagem no formato RGB para um array em
-# memÃ³ria. A FunÃ§Ã£o tem como parÃ¢metros uma string com o nome do ficheiro a ler e
-# o endereÃ§o de um buffer onde a imagem deve ser escrita.
+#Função:read_rgb_image
+#Descrição: lê um ficheiro com uma imagem no formato RGB para um array em
+# memória. A Função tem como parâmetros uma string com o nome do ficheiro a ler e
+# o endereço de um buffer onde a imagem deve ser escrita.
 #Argumentos:
 #a0-string com o nome do arquivo
-#a1-endereÃ§o do buffer
+#a1-endereço do buffer
 ################################3
 read_rgb_image:
 
@@ -111,10 +111,10 @@ read_rgb_image:
 
   
 ##################################     
-#FunÃ§Ã£o:write_rgb_image
-#DescriÃ§Ã£o:escreve uma imagem em formato RGB num ficheiro. 
+#Função:write_rgb_image
+#Descrição:escreve uma imagem em formato RGB num ficheiro. 
 #
-#tem como parÃ¢metros o nome de um ficheiro, um buffer com a imagem e o comprimento
+#tem como parâmetros o nome de um ficheiro, um buffer com a imagem e o comprimento
 #do buffer.
 #Argumentos: 
 #a0: imagem final
@@ -144,8 +144,8 @@ write_rgb_image:
 
 
 ################################
-# FunÃ§Ã£o :hue
-# DescriÃ§Ã£o:Calcula a componente Hue a partir das componentes R, G e B de um pixel
+# Função :hue
+# Descrição:Calcula a componente Hue a partir das componentes R, G e B de um pixel
 # Argumentos: a0 - pixel da imagem
 # Retorna: a0 - Hue (0-359)
 ################################
@@ -163,7 +163,7 @@ hue:
     skip1:
       mv t3, t1
     skip2:
-      bge t2, t3, skip3
+      blt t2, t3, skip3
       mv t3, t2
     skip3:
       bgt t1, t0, skip4
@@ -172,7 +172,7 @@ hue:
     skip4:
       mv t4, t1
     skip5:
-      blt t2, t4, skip6
+      bgt t2, t4, skip6
       mv t4, t2
     skip6:
 
@@ -236,10 +236,10 @@ ret
 
 
 #######################################
-# FunÃ§ao indicator
+# Funçao indicator
 # Recebe um personagem (e.g. 1,2,3) e um pixel com componentes R, G, B
 # Indica se esse pixel pertence ou no  personagem
-# EndereÃ§o dos parmetros passados na pilha
+# Endereço dos parmetros passados na pilha
 # a1 = Personagem
 # a0 - pixel da imagem
 ########################################
@@ -302,7 +302,7 @@ indicator:
 
 
 ##########################################
-# FunÃ§Ã£o location
+# Função location
 # Argumentos:
 #   a0 - indcator
 #   a1 - array 
@@ -326,13 +326,16 @@ location:
         addi t0, t0, 1
         add t3, t3, t1
     	add t4, t4, t2
-
+j black
         	
     increment:
     
 											
 	
-	
+	sb zero, 0(a3)
+   sb zero, 1(a3)   
+   sb zero, 2(a3)
+    black:
 
 
     li t5, 320
@@ -373,10 +376,10 @@ ret
 
 
 ######################################
-#   FunÃ§Ã£o: find_centro_De_massa
-#   DescriÃ§Ã£o: A funÃ§Ã£o precorre a linhas e as colunas da imagem 
+#   Função: find_centro_De_massa
+#   Descrição: A função precorre a linhas e as colunas da imagem 
 #   para encontrar o pixel correspondente ao centro de massa
-#   a0 - endereÃ§o da imagem
+#   a0 - endereço da imagem
 #   a1 - array 
 ######################################
 
@@ -405,10 +408,10 @@ find_centro_De_massa:
 
 
 ###############################################
-# FunÃ§Ã£o: desenhar_centro
-# DescriÃ§Ã£o: A funÃ§Ã£o desenhar o centro  coloca os pixeis Ã  volta 
+# Função: desenhar_centro
+# Descrição: A função desenhar o centro  coloca os pixeis à volta 
 # do centro de massa a vermelho em forma de cruz.
-# a0 - endereÃ§o centro de massa da imagem
+# a0 - endereço centro de massa da imagem
 ###############################################
 
 desenhar_centro:
