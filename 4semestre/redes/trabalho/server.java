@@ -6,9 +6,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class server {
-    private static final long PERSISTENCE_INTERVAL_MS = 5 * 60 * 1000; // 5 minutes
+    private static final long TEMPO_ESPERA = 60 * 1000;// 1 minuto
+    private static final String FILE = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/save/SavedData.dat";
     private static long serverStart;
-    private static boolean shouldPersistData = true;
+
+    public static Hashtable<String, String> studentAttendance;
+    public static ArrayList< Question> questionArr;
+    public static ArrayList<String> fileNameArr;
 
     public static long getServerStart() {
         return serverStart;
@@ -17,11 +21,14 @@ public class server {
     public static void main(String[] args) {
 
         ServerSocket server = null;
+        studentAttendance = new Hashtable<>();
+        questionArr = new ArrayList<>();
+        fileNameArr = new ArrayList<>();
 
         try {
 
             // Load data from file if it exists
-            //loadPersistedData();
+            loadPersistedData();
 
             // Cria um ServerSocket para aguardar conexões na porta 5555
             server = new ServerSocket(5555);
@@ -29,8 +36,8 @@ public class server {
             System.out.println("Servidor das aulas...");
 
             // Create a separate thread for data persistence
-            //Thread persistenceThread = new Thread(Server::persistDataRegularly);
-            //persistenceThread.start();
+            Thread persistenceThread = new saveThread();
+            persistenceThread.start();
 
             while (true) {
 
@@ -39,7 +46,8 @@ public class server {
                 System.out.println("aluno conectado: " + client.getInetAddress().getHostAddress());
 
                 // Cria uma nova thread para tratar a conexão do cliente
-                ClientThread clientThread = new ClientThread(client, serverStart);
+                ClientThread clientThread = new ClientThread(client, serverStart, studentAttendance, questionArr,
+                        fileNameArr);
 
                 clientThread.start();
 
@@ -56,8 +64,52 @@ public class server {
             }
         }
     }
-}
 
+    @SuppressWarnings("unchecked")
+    private static void loadPersistedData() {
+        try (FileInputStream fis = new FileInputStream(FILE);
+                ObjectInputStream ois = new ObjectInputStream(fis)) {
+            // Read the persisted data from the file and update the questionArr and
+            // answerArr
+            questionArr = (ArrayList<Question>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            // Ignore errors if the file doesn't exist or if deserialization fails
+            System.out.println("sem dados guardados.");
+        }
+    }
+
+    public static class saveThread extends Thread {
+
+        public void run() {
+            System.out.println("saving....");
+            persistDataRegularly();
+
+        }
+
+        private void persistDataRegularly() {
+            while (true) {
+                try {
+                    Thread.sleep(TEMPO_ESPERA);
+                    persistDataToFile();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        private void persistDataToFile() {
+            try (FileOutputStream fos = new FileOutputStream(FILE);
+                    ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                // Write the questionArr and answerArr to the file for persistence
+                oos.writeObject(questionArr);
+                oos.flush();
+                System.out.println("DADOS COPIADOS, Ficheiro: " + FILE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
 
 
 
@@ -72,23 +124,21 @@ public class server {
 
 class ClientThread extends Thread {
     final static String FILE_DIRECTORY = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/";
+    final static String SAVE_DIRECTORY ="/home/antonio/Documentos/uni/4semestre/redes/trabalho/save/";
 
     private Socket clientSocket;
 
-    protected static Hashtable<String, String> studentAttendance;
-    protected static Hashtable<Integer, Question> questionArr;
-    protected static ArrayList<String> fileNameArr;
+    protected Hashtable<String, String> studentAttendance;
+    protected ArrayList< Question> questionArr;
+    protected ArrayList<String> fileNameArr;
 
     private HashMap<Integer, String> answerArr;
-    private int questionCounter = 0;
-    private String user = "aluno";
-    private long serverstart;
+    private int questionCounter;
+    private String user;
+    private long serverstart, timeElapsed;
 
     private InputStream input;
     private OutputStream output;
-
-
-
 
     public String getUser() {
         return user;
@@ -101,33 +151,40 @@ class ClientThread extends Thread {
     public long getServerstart() {
         return serverstart;
     }
+    public long getTime() {
+        return timeElapsed;
+    }
 
+    public void setTime() {
+        this.timeElapsed=System.currentTimeMillis();
+    }
+    
 
-
-
-
-    public ClientThread(Socket clientSocket, long serverstart) throws IOException {
+    public ClientThread(Socket clientSocket, long serverstart, Hashtable<String, String> studentAttendance,
+            ArrayList< Question> questionArr, ArrayList<String> fileNameArr) throws IOException {
         this.clientSocket = clientSocket;
         this.serverstart = serverstart;
 
-        studentAttendance = new Hashtable<>();
-        questionArr = new Hashtable<>();
-        answerArr = new HashMap<>();
-        fileNameArr = new ArrayList<>();
+        this.studentAttendance = studentAttendance;
+        this.questionArr = questionArr;
+        this.fileNameArr = fileNameArr;
 
+        answerArr = new HashMap<>();
 
         input = clientSocket.getInputStream();
-        output =clientSocket.getOutputStream();
+        output = clientSocket.getOutputStream();
+
+        setTime();
     }
 
     public void run() {
-
+        
         try {
             // Obtém os streams de entrada e saída para comunicação com o cliente
             // Set up PrintWriter and BufferedReader here
             byte[] msg = new byte[1024];
-            int read= input.read(msg);
-            String line = new String(msg, 0, read), sublogin, log = null, outtext  =null;
+            int read = input.read(msg);
+            String line = new String(msg, 0, read), sublogin, log = null, outtext = null;
             String[] logarr = line.split(" ");
 
             do {
@@ -138,27 +195,26 @@ class ClientThread extends Thread {
                 }
 
             } while (!sublogin.equalsIgnoreCase("iam") && log.equals(null));
-
+            loadPersistedData();
             output.write((log + "\nEND").getBytes());
             output.flush();
-            
 
-            while ((read= input.read(msg)) != -1) {
-               
+            while ((read = input.read(msg)) != -1) {
+
                 line = new String(msg, 0, read, StandardCharsets.UTF_8);
-                
+
                 if (line.equals("exit")) {
                     output.write("GOODBYE END".getBytes());
                     break;
                 }
 
-
-                outtext = processCommand(line)+ "\nEND";
+                outtext = processCommand(line) + "\nEND";
                 System.out.println(outtext);
 
                 output.write((outtext).getBytes());
                 output.flush(); //
                 
+                persistDataRegularly();
             }
 
             // Fecha a conexão com o cliente
@@ -171,20 +227,14 @@ class ClientThread extends Thread {
         }
     }
 
-
-
-
-
-
-
     private String processCommand(String command) {
         String response;
         String commandname;
-        String args="";
-        if(command.toLowerCase().startsWith("LIST")){
-            commandname= command;
-            
-        }else{
+        String args = "";
+        if (command.toLowerCase().startsWith("LIST")) {
+            commandname = command;
+
+        } else {
             int index = command.indexOf(" ");
             if (index != -1) {
                 commandname = command.substring(0, index);
@@ -192,9 +242,9 @@ class ClientThread extends Thread {
             } else {
                 commandname = command;
                 args = "";
-            }   
+            }
         }
-        
+
         switch (commandname.toLowerCase()) {
 
             case "ask":
@@ -214,7 +264,7 @@ class ClientThread extends Thread {
                 response = handleGetFile(Integer.parseInt(args));
                 break;
             case "putfile":
-               
+
                 response = handlePutFile(args);
                 break;
 
@@ -235,7 +285,7 @@ class ClientThread extends Thread {
     }
 
     private String handleListFiles() {
-        
+
         StringBuilder fileNames = new StringBuilder();
 
         if ((fileNameArr != null)) {
@@ -244,8 +294,8 @@ class ClientThread extends Thread {
 
                 File f = new File(fileNameArr.get(i));
 
-                fileNames.append("("+(i + 1)+") "+(f.getName()).substring(1)+"\n");
-                
+                fileNames.append("(" + (i + 1) + ") " + (f.getName()).substring(1) + "\n");
+
             }
         }
 
@@ -255,8 +305,8 @@ class ClientThread extends Thread {
 
     private String handlePutFile(String args) {
 
-        String[] parts = args.split(" "); 
-        String filename = "s_"+parts[0];
+        String[] parts = args.split(" ");
+        String filename = "s_" + parts[0];
         int bytes = Integer.parseInt(parts[1]);
 
         File file = new File(FILE_DIRECTORY + filename);
@@ -265,77 +315,81 @@ class ClientThread extends Thread {
 
         byte[] bytearray = new byte[bytes];
         int read;
-        
+
         try {
             fos = new FileOutputStream(file);
-            in=clientSocket.getInputStream();
+            in = clientSocket.getInputStream();
 
             read = in.read(bytearray);
 
             fos.write(bytearray, 0, read);
-            
 
-            // Adiciona o nome do ficheiro ao ArrayList 
+            // Adiciona o nome do ficheiro ao ArrayList
             synchronized (fileNameArr) {
                 fileNameArr.add(filename);
             }
 
-
-            
         } catch (IOException e) {
             System.out.println("Failed UPLOAD of" + filename);
             e.printStackTrace();
-             
-        } finally{
-            if(fos != null){
-                try {            
+
+        } finally {
+            if (fos != null) {
+                try {
                     fos.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
+
                     e.printStackTrace();
                 }
 
             }
         }
-            
+
         return "UPLOADED " + filename;
     }
 
     private String handleGetFile(int fileIndex) {
-        
-        String filename=fileNameArr.get(fileIndex-1);
-        
+
+        String filename = fileNameArr.get(fileIndex - 1);
+
         File file = new File(FILE_DIRECTORY + filename);
         FileInputStream fis = null;
         OutputStream os = null;
 
-
         try {
             fis = new FileInputStream(file);
             os = clientSocket.getOutputStream();
-            
-            os.write(("FILE"+ " " + fileIndex +" "+ filename+" "+ (file.length())+" \n").getBytes(StandardCharsets.UTF_8));
-            
+
+            os.write(("FILE" + " " + fileIndex + " " + filename + " " + (file.length()) + " ")
+                    .getBytes(StandardCharsets.UTF_8));
+
             byte[] mybytearray = new byte[(int) file.length()];
             int bytesRead;
 
+            String readyString = "";
+            do {
+                int ready = input.read(mybytearray);
+                readyString = new String(mybytearray, 0, ready);
+                System.out.println(readyString);
 
-            while(( bytesRead = fis.read(mybytearray))>0){
+            } while (!readyString.equals("READY"));
+
+            while ((bytesRead = fis.read(mybytearray)) > 0) {
+
                 os.write(mybytearray, 0, bytesRead);
-                os.flush();   //
+                os.flush(); //
             }
-            
+
             fis.close();
         } catch (IOException e) {
             e.printStackTrace();
 
-
-        } finally{
-            if(fis != null){
-                try {            
+        } finally {
+            if (fis != null) {
+                try {
                     fis.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
+
                     e.printStackTrace();
                 }
 
@@ -345,25 +399,22 @@ class ClientThread extends Thread {
         return "DOWNLOADED " + filename;
     }
 
-    
-
     private String handleListQuestions() {
         StringBuilder response = new StringBuilder();
 
-        for (int i = 1; i <= questionArr.size(); i++) {
+        for (int i = 0; i < questionArr.size(); i++) {
 
             Question question = questionArr.get(i);
 
-            response.append("(" + i + ") " + question.getQuestion() + "?\n");
+            response.append("(" + (i + 1) + ") " + question.getQuestion() + "?\n");
 
             if (answerArr.get(i) != null) {
 
                 response.append(getUser() + " " + answerArr.get(i) + "\n");
                 response.append("professor " + question.getAnswer() + "\n");
-            
-            
+
             } else if (getUser().equalsIgnoreCase("professor")) {
-                
+
                 response.append("professor " + question.getAnswer() + "\n");
             } else {
 
@@ -376,11 +427,10 @@ class ClientThread extends Thread {
     }
 
     private String handleAnswer(String args) {
-        
+
         String parameters = args.substring(2);
-        int questionnum = args.charAt(0)-48;
-        
-       
+        int questionnum = args.charAt(0) - 49;
+
         Question question = questionArr.get(questionnum);
 
         if (question == null) {
@@ -391,52 +441,51 @@ class ClientThread extends Thread {
         if (getUser().equalsIgnoreCase("professor")) {
 
             question.setAnswer(parameters);
-            questionArr.put(questionnum, question);
+            questionArr.add( question);
 
         } else {
             answerArr.put(questionnum, parameters);
         }
 
-        return "REGISTERED QUESTION " + questionnum;
+        return "REGISTERED ANSWER TO QUESTION " + (questionnum + 1);
     }
-
 
     private String handleAsk(String parameters) {
         int i = parameters.indexOf("?");
 
         String question = parameters.substring(0, i);
-        questionCounter++;
+        questionCounter = questionArr.size();
 
         if (getUser().equalsIgnoreCase("professor")) {
 
-            Question newQuestion = new Question(question, parameters.substring(i));
-            questionArr.put(questionCounter, newQuestion);
+            Question newQuestion = new Question(question, null);
+            questionArr.add( newQuestion);
 
         } else {
             Question newQuestion = new Question(question, null);
-            questionArr.put(questionCounter, newQuestion);
+            questionArr.add( newQuestion);
 
         }
-        return "QUESTION " + questionCounter + " " + parameters.substring(0, i) + "?";
+        return "QUESTION " + (questionCounter + 1) + " " + parameters.substring(0, i) + "?";
     }
 
     private String handleLogin(String parameters) {
 
         long studentdelay = System.currentTimeMillis() - getServerstart();
 
-        String status;
+        String status= "";;
         studentdelay /= 60000;
 
         switch (parameters) {
             case "professor":
 
-                setUser("professor");
+            setUser("professor");
                 break;
 
             default:
-                if (studentdelay < 20) {
+                if (studentdelay < 1) {
                     status = "Present";
-                } else if (studentdelay < 45) {
+                } else if (studentdelay < 2) {
                     status = "Late";
 
                 } else {
@@ -449,45 +498,43 @@ class ClientThread extends Thread {
 
         }
 
-        return "HELLO " + parameters;
+        return "HELLO " + parameters + " " + status;
+
     }
 
-/*/
-    private static void loadPersistedData() {
-        try (FileInputStream fis = new FileInputStream(FILE_DIRECTORY);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-            // Read the persisted data from the file and update the questionArr and answerArr
-            questionArr = (Hashtable<Integer, Question>) ois.readObject();
+    @SuppressWarnings("unchecked")
+    private  void loadPersistedData() {
+        try (FileInputStream fis = new FileInputStream(SAVE_DIRECTORY + getUser()+".dat");
+                ObjectInputStream ois = new ObjectInputStream(fis)) {
+            // Read the persisted data from the file and update the questionArr and
+           
             answerArr = (HashMap<Integer, String>) ois.readObject();
+
         } catch (IOException | ClassNotFoundException e) {
             // Ignore errors if the file doesn't exist or if deserialization fails
-            System.out.println("No persisted data found.");
+            System.out.println("Sem dados.");
         }
     }
 
-    private static void persistDataRegularly() {
-        while (shouldPersistData) {
-            try {
-                Thread.sleep(PERSISTENCE_INTERVAL_MS);
-                persistDataToFile();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+    private void persistDataRegularly() {
+        if (System.currentTimeMillis()-getTime()>1000*30) {
+            
+            persistDataToFile();
+            setTime();
+            
         }
     }
 
-    private static void persistDataToFile() {
-        try (FileOutputStream fos = new FileOutputStream(FILE_DIRECTORY);
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+    private  void persistDataToFile() {
+        try (FileOutputStream fos = new FileOutputStream(SAVE_DIRECTORY+getUser()+".dat");
+                ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             // Write the questionArr and answerArr to the file for persistence
-            oos.writeObject(questionArr);
             oos.writeObject(answerArr);
             oos.flush();
-            System.out.println("Data persisted to file: " + FILE_DIRECTORY);
+            System.out.println("Data persisted to file: " + SAVE_DIRECTORY+getUser()+".dat");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-*/
 
 }

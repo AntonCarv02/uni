@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Scanner;
 
 public class Client {
-    final static String FILE_DIRECTORY = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/";
+    final static String FILE_DIRECTORY = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/save/";
 
     public static void main(String[] args) {
         try {
@@ -64,19 +64,24 @@ public class Client {
                     
                     
                     read = reader.read(msg);
-                    String response = new String(msg, 0, 20);
+
+                    String response = new String(msg, 0, read);
+                    
                     System.out.println(response);
-                     System.out.flush();
+                    System.out.flush();
+                    
+                    writer.write("READY".getBytes());
+
                     if(response.startsWith("FILE")){
                         
                         String[] parts= response.split(" ");
-                     //   int fileIndex = Integer.parseInt(parts[1]);
                         String filename = parts[2].substring(1);
                         int fileSize = Integer.parseInt((parts[3]).trim());
 
                         
                         File file = new File(FILE_DIRECTORY+filename);
                         FileOutputStream fos = new FileOutputStream(file);
+
                         
                         // Ler e salvar o conteúdo do arquivo recebido
                         byte[] fileContent = new byte[fileSize];
@@ -91,6 +96,8 @@ public class Client {
                         System.out.println(fileContent.toString());
                         System.out.flush();
                         fos.close();
+
+
                     }else{
                         System.out.println("falta ERRO");
                     }
