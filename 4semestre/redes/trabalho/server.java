@@ -7,7 +7,7 @@ import java.util.*;
 
 public class server {
     private static final long TEMPO_ESPERA = 60 * 1000;// 1 minuto
-    private static final String FILE = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/save/SavedData.dat";
+    private static final String FILE = "trabalho/save/SavedData.dat";
     private static long serverStart;
 
     public static Hashtable<String, String> studentAttendance;
@@ -72,7 +72,8 @@ public class server {
             // Read the persisted data from the file and update the questionArr and
             // answerArr
             questionArr = (ArrayList<Question>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+            fileNameArr = (ArrayList<String>) ois.readObject();
+    } catch (IOException | ClassNotFoundException e) {
             // Ignore errors if the file doesn't exist or if deserialization fails
             System.out.println("sem dados guardados.");
         }
@@ -102,6 +103,7 @@ public class server {
                     ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 // Write the questionArr and answerArr to the file for persistence
                 oos.writeObject(questionArr);
+                oos.writeObject(fileNameArr);
                 oos.flush();
                 System.out.println("DADOS COPIADOS, Ficheiro: " + FILE);
             } catch (IOException e) {
@@ -123,8 +125,8 @@ public class server {
 
 
 class ClientThread extends Thread {
-    final static String FILE_DIRECTORY = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/";
-    final static String SAVE_DIRECTORY ="/home/antonio/Documentos/uni/4semestre/redes/trabalho/save/";
+    final static String FILE_DIRECTORY = "trabalho/";
+    final static String SAVE_DIRECTORY ="trabalho/save/";
 
     private Socket clientSocket;
 
@@ -183,21 +185,32 @@ class ClientThread extends Thread {
             // Obtém os streams de entrada e saída para comunicação com o cliente
             // Set up PrintWriter and BufferedReader here
             byte[] msg = new byte[1024];
-            int read = input.read(msg);
-            String line = new String(msg, 0, read), sublogin, log = null, outtext = null;
-            String[] logarr = line.split(" ");
+            int read ;
+            String line, sublogin, log = null, outtext = null;
+            
+
 
             do {
+                read = input.read(msg);
+                line = new String(msg, 0, read);
+                String[] logarr = line.split(" ");
+
                 sublogin = logarr[0];
                 if (sublogin.equalsIgnoreCase("iam")) {
 
                     log = (handleLogin(logarr[1]));
                 }
 
-            } while (!sublogin.equalsIgnoreCase("iam") && log.equals(null));
+                
+                output.write((log + "\nEND").getBytes());
+                output.flush();
+            } while (!sublogin.equalsIgnoreCase("iam") && log==(null));
+
+
             loadPersistedData();
-            output.write((log + "\nEND").getBytes());
-            output.flush();
+
+            
+
 
             while ((read = input.read(msg)) != -1) {
 
@@ -406,7 +419,7 @@ class ClientThread extends Thread {
 
             Question question = questionArr.get(i);
 
-            response.append("(" + (i + 1) + ") " + question.getQuestion() + "?\n");
+            response.append("\n(" + (i + 1) + ") " + question.getQuestion() + "?\n");
 
             if (answerArr.get(i) != null) {
 
@@ -427,16 +440,27 @@ class ClientThread extends Thread {
     }
 
     private String handleAnswer(String args) {
-
-        String parameters = args.substring(2);
+        
+        Question question;
+        String parameters;
         int questionnum = args.charAt(0) - 49;
 
-        Question question = questionArr.get(questionnum);
+        try {
+            parameters= args.substring(2);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return "formato errado";
+        }
 
-        if (question == null) {
+        try {
+                   
+            question = questionArr.get(questionnum);
 
+        } catch ( Exception e) {
+            // TODO: handle exception
             return ("não existe pergunta Nº " + questionnum);
         }
+       
 
         if (getUser().equalsIgnoreCase("professor")) {
 
@@ -450,17 +474,27 @@ class ClientThread extends Thread {
         return "REGISTERED ANSWER TO QUESTION " + (questionnum + 1);
     }
 
-    private String handleAsk(String parameters) {
-        int i = parameters.indexOf("?");
+    private synchronized String handleAsk(String parameters) {
 
-        String question = parameters.substring(0, i);
+        int i = parameters.indexOf("?");
+        String question ="";
+
+        try {
+            question = parameters.substring(0, i);
+            
+        } catch (Exception e) {
+            // TODO: handle exception
+            return "formato errado";
+        }
+        
+
         questionCounter = questionArr.size();
 
         if (getUser().equalsIgnoreCase("professor")) {
 
             Question newQuestion = new Question(question, null);
             questionArr.add( newQuestion);
-
+            
         } else {
             Question newQuestion = new Question(question, null);
             questionArr.add( newQuestion);

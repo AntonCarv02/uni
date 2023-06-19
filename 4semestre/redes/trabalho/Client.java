@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Scanner;
 
 public class Client {
-    final static String FILE_DIRECTORY = "/home/antonio/Documentos/uni/4semestre/redes/trabalho/save/";
+    final static String FILE_DIRECTORY = "trabalho/save/";
 
     public static void main(String[] args) {
         try {
@@ -99,7 +99,7 @@ public class Client {
 
 
                     }else{
-                        System.out.println("falta ERRO");
+                        System.out.println("ERRO");
                     }
                     
                 } 
