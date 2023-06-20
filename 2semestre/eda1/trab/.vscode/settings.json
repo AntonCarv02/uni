@@ -1,5 +1,11 @@
 {
+    "cmake.configureOnOpen": true,
     "files.associations": {
-        "ler_files.h": "c"
+        "cerrno": "c",
+        "system_error": "c",
+        "tuple": "c",
+        "hashtable.h": "c",
+        "*.tcc": "c",
+        "algorithm": "c"
     }
 }
