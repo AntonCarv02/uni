@@ -1,6 +1,8 @@
 
 #define FatalError( Str )   fprintf( stderr, "%s\n", Str ), exit( 1 )
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 typedef char* ElementType;
@@ -17,8 +19,15 @@ typedef char* ElementType;
         HashTable InitializeTable( int TableSize );
         void DestroyTable( HashTable H );
         Position Find( ElementType Key, HashTable H );
-        void Insert( ElementType Key, HashTable H );
+        HashTable Insert( ElementType Key, HashTable H );
         ElementType Retrieve( Position P, HashTable H );
         HashTable Rehash( HashTable H );
+        int isPrime(int number);
+        int NextPrime(int number);
+        void PrintTable(HashTable H);
+        float LoadFactor(HashTable H);
+        HashTable loadDic(const char *filename, HashTable h);
+
+        HashTable loadPrefix(const char *filename, HashTable prefix);
         
         #endif  /* _HashQuad_H */

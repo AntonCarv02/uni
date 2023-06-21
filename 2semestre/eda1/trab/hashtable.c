@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 #include "hashtable.h"
 
@@ -20,8 +18,6 @@ struct HashEntry
     enum KindOfEntry Info;
 };
 
-
-
 typedef struct HashEntry Cell;
 
 /* Cell *TheCells will be an array of */
@@ -29,37 +25,41 @@ typedef struct HashEntry Cell;
 struct HashTbl
 {
     int TableSize;
+    int Ocupados;
     Cell *TheCells;
 };
 
 
-#include <stdbool.h>
-
-bool isPrime(int number) {
+int isPrime(int number)
+{
     if (number <= 1)
         return 0;
 
-    for (int i = 2; i * i <= number; i++) {
-        if (number % i == 0){
+    for (int i = 2; i * i <= number; i++)
+    {
+        if (number % i == 0)
+        {
             return 0;
-            }
+        }
     }
 
     return 1;
 }
 
-int NextPrime(int number) {
+int NextPrime(int number)
+{
     number++; // Increment the number to start checking the next number
 
-    while (1) {
-        if (isPrime(number)){
+    while (1)
+    {
+        if (isPrime(number))
+        {
 
             return number;
         }
 
         number++; // Increment the number to check the next one
     }
-
 }
 
 
@@ -68,12 +68,17 @@ int NextPrime(int number) {
 Index Hash(char *Key, int TableSize)
 {
     unsigned int hv = 0;
-    while (*Key != '\0')
+    //printf("%s %d", Key, TableSize);
+    
+    while (*Key != '\0'){
         hv = (hv << 5) + *Key++;
-
+}
+    
+    //printf(" %d\n",hv% TableSize);
     
     return hv % TableSize;
 }
+
 
 
 HashTable InitializeTable(int TableSize)
@@ -81,11 +86,13 @@ HashTable InitializeTable(int TableSize)
     HashTable H;
     int i;
 
-    if (TableSize < MinTableSize)
+    /*if (TableSize < MinTableSize)
     {
         printf("Table size too small");
         return NULL;
-    }
+    }*/
+
+
 
     /* Allocate table */
     H = malloc(sizeof(struct HashTbl));
@@ -94,16 +101,22 @@ HashTable InitializeTable(int TableSize)
 
 
     H->TableSize = NextPrime(TableSize);
+
     /* Allocate array of Cells */
     H->TheCells = malloc(sizeof(Cell) * H->TableSize);
+
     if (H->TheCells == NULL)
         printf("Out of space!!!");
+
+
 
     for (i = 0; i < H->TableSize; i++)
         H->TheCells[i].Info = Empty;
 
+
     return H;
 }
+
 
 
 
@@ -112,22 +125,23 @@ Position Find(char *Key, HashTable H)
     Index CurrentPos;
     int CollisionNum;
 
+
     CurrentPos = Hash(Key, H->TableSize);
-    /*if(strcmp(Key,"AARDVARK")==0){
-        printf("%u\n",CurrentPos);
-    }*/
     
     while (H->TheCells[CurrentPos].Info != Empty && strcmp(H->TheCells[CurrentPos].Element, Key) != 0)
     {
         CurrentPos++;
         CurrentPos %= H->TableSize;
     }
-
-
+    
+    
     return CurrentPos;
 }
 
-HashTable rehash(HashTable H)
+
+
+
+HashTable Rehash(HashTable H)
 {
     int i, OldSize;
     Cell *OldCells;
@@ -136,33 +150,53 @@ HashTable rehash(HashTable H)
     OldSize = H->TableSize;
 
     /* Get a new, empty table */
-    H = InitializeTable(2 * OldSize);
+    HashTable new = InitializeTable(2 * OldSize);
+
 
     /* Scan through old table, reinserting into new */
-    for (i = 0; i < OldSize; i++)
-        if (OldCells[i].Info == Legitimate)
-            Insert(OldCells[i].Element, H);
+    for (i = 0; i < OldSize; i++){
 
+        if (OldCells[i].Info == Legitimate){
+
+            Insert(OldCells[i].Element, new);
+        }
+    }
+    PrintTable(H);
     free(OldCells);
+    
+    return new;
+}
 
+
+
+
+HashTable Insert(char *Key, HashTable H)
+{
+    Position Pos = Find(Key, H);
+
+    
+   
+    if (H->TheCells[Pos].Info != Legitimate)
+    { 
+        /* OK to insert here */
+        H->TheCells[Pos].Info = Legitimate;
+        H->TheCells[Pos].Element = strdup(Key);
+        H->Ocupados++;
+
+        
+        if (LoadFactor(H)>(0.5)){
+
+            
+            H = Rehash(H);
+        }
+    }
     return H;
 }
 
 
-
-void Insert(char *Key, HashTable H)
-{
-    Position Pos = Find(Key, H);
-    if (H->TheCells[Pos].Info != Legitimate)
-    {
-        /* OK to insert here */
-        H->TheCells[Pos].Info = Legitimate;
-        H->TheCells[Pos].Element = strdup(Key);
-    }
-
+float LoadFactor(HashTable H) {
+    return (float)H->Ocupados / H->TableSize;
 }
-
-
 
 
 
@@ -202,15 +236,17 @@ void PrintTable(HashTable H)
 HashTable loadDic(const char *filename, HashTable h)
 {
 
-    char str[30] = "";
+    char str[30];
     FILE *f = fopen(filename, "r");
 
-    while(fscanf(f, " %s", str) != EOF)/*Se o ficheiro não tiver mais nada, fecha*/
-        {  
-            
-            Insert(str, h);
-            
-        }
+    while (fscanf(f, " %s", str) != EOF) /*Se o ficheiro nao tiver mais nada, fecha*/
+    {
+        int i = 1;
+
+        h =Insert(str, h);
+        h->Ocupados=0;
+
+    }
 
     fclose(f);
     return h;
@@ -218,13 +254,47 @@ HashTable loadDic(const char *filename, HashTable h)
 
 
 
-int main(int argc, char const *argv[])
-{   
-    HashTable H = InitializeTable(SIZE_DIC);
-    
-    H = loadDic("txt/corncob_caps_2023.txt", H);
-    Position p = Find("WATCHWORD",H);
 
-    printf("%d %s",p, H->TheCells[p].Element);
+HashTable loadPrefix(const char *filename, HashTable prefix)
+{
+
+    char str[30],pre[30];
+    FILE *f = fopen(filename, "r");
+
+    while (fscanf(f, " %s", str) != EOF) /*Se o ficheiro nao tiver mais nada, fecha*/
+    {
+        int i = 1;
+
+        
+        while (i<strlen(str))
+        {   
+            
+            memset(pre,'\0',sizeof(pre));
+
+            strncpy(pre, str,i);
+
+            
+            prefix = Insert(pre, prefix);
+            
+            i++;
+            
+        }        
+        
+    }
+
+    fclose(f);
+    return prefix;
+}
+
+
+int main(int argc, char const *argv[])
+{
+    HashTable WordsTable = InitializeTable(SIZE_DIC), PrefixTable = InitializeTable(6);
+
+    WordsTable = loadDic("txt/test.txt", WordsTable);
+    PrefixTable = loadPrefix("txt/test.txt", PrefixTable);
+
+   PrintTable(PrefixTable);
+
     return 0;
 }
