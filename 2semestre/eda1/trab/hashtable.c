@@ -1,9 +1,7 @@
 
-
 #include "hashtable.h"
 
 #define MinTableSize (10)
-#define SIZE_DIC 58109
 
 enum KindOfEntry
 {
@@ -161,7 +159,6 @@ HashTable Rehash(HashTable H)
             Insert(OldCells[i].Element, new);
         }
     }
-    PrintTable(H);
     free(OldCells);
     
     return new;
@@ -235,7 +232,7 @@ void PrintTable(HashTable H)
 
 HashTable loadDic(const char *filename, HashTable h)
 {
-
+    h = InitializeTable(SIZE_DIC);
     char str[30];
     FILE *f = fopen(filename, "r");
 
@@ -257,7 +254,7 @@ HashTable loadDic(const char *filename, HashTable h)
 
 HashTable loadPrefix(const char *filename, HashTable prefix)
 {
-
+    prefix = InitializeTable(6);
     char str[30],pre[30];
     FILE *f = fopen(filename, "r");
 
@@ -287,14 +284,4 @@ HashTable loadPrefix(const char *filename, HashTable prefix)
 }
 
 
-int main(int argc, char const *argv[])
-{
-    HashTable WordsTable = InitializeTable(SIZE_DIC), PrefixTable = InitializeTable(6);
 
-    WordsTable = loadDic("txt/test.txt", WordsTable);
-    PrefixTable = loadPrefix("txt/test.txt", PrefixTable);
-
-   PrintTable(PrefixTable);
-
-    return 0;
-}

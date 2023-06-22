@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SIZE_DIC 58109
+
 
 typedef char* ElementType;
 
@@ -18,8 +20,8 @@ typedef char* ElementType;
 
         HashTable InitializeTable( int TableSize );
         void DestroyTable( HashTable H );
-        Position Find( ElementType Key, HashTable H );
-        HashTable Insert( ElementType Key, HashTable H );
+        Position Find( char* Key, HashTable H );
+        HashTable Insert(char *Key, HashTable H);
         ElementType Retrieve( Position P, HashTable H );
         HashTable Rehash( HashTable H );
         int isPrime(int number);
@@ -27,7 +29,6 @@ typedef char* ElementType;
         void PrintTable(HashTable H);
         float LoadFactor(HashTable H);
         HashTable loadDic(const char *filename, HashTable h);
-
         HashTable loadPrefix(const char *filename, HashTable prefix);
         
         #endif  /* _HashQuad_H */

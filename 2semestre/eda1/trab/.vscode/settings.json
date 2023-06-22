@@ -6,6 +6,11 @@
         "tuple": "c",
         "hashtable.h": "c",
         "*.tcc": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "ler_files.h": "c",
+        "boogle.h": "c",
+        "lerfiles.h": "c",
+        "lists.h": "c",
+        "stdlib.h": "c"
     }
 }

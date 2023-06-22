@@ -1,5 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "hashtable.h"
-#include "ler_files.h"
-#include "lists.h"
+//#include "lists.h"
 
+void readBoggle(char game[4][4], char *file);
+
+void showBoard(char game[4][4]);
