@@ -1,10 +1,13 @@
-exe/boogle: bin/boogle.o bin/hashtable.o
+exe/boogle: bin/boogle.o bin/hashtable.o bin/lists.o
 	gcc -o $@ $^
 
 bin/boogle.o: boogle_main.c 
 	gcc -c -o $@ $^
 
 bin/hashtable.o: hashtable.c 
+	gcc -c -o $@ $^
+
+bin/lists.o: lists.c 
 	gcc -c -o $@ $^
 
 

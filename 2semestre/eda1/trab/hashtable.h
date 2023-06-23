@@ -7,22 +7,24 @@
 #define SIZE_DIC 58109
 
 
-typedef char* ElementType;
+typedef char* Element;
 
         #ifndef _HashQuad_H
         #define _HashQuad_H
 
         typedef unsigned int Index;
-        typedef Index Position;
 
         struct HashTbl;
         typedef struct HashTbl *HashTable;
 
+        int Ocupados(HashTable h);
+        int tablesize(HashTable h);
+        int SearchPalavra( char* Key, HashTable H);
         HashTable InitializeTable( int TableSize );
         void DestroyTable( HashTable H );
-        Position Find( char* Key, HashTable H );
+        Index Find( char* Key, HashTable H );
         HashTable Insert(char *Key, HashTable H);
-        ElementType Retrieve( Position P, HashTable H );
+        Element Retrieve( Index P, HashTable H );
         HashTable Rehash( HashTable H );
         int isPrime(int number);
         int NextPrime(int number);

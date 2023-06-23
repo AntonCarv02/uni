@@ -11,6 +11,8 @@
         "boogle.h": "c",
         "lerfiles.h": "c",
         "lists.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "stdbool.h": "c",
+        "string.h": "c"
     }
 }

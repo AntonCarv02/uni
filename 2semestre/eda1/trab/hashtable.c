@@ -1,4 +1,3 @@
-
 #include "hashtable.h"
 
 #define MinTableSize (10)
@@ -12,7 +11,7 @@ enum KindOfEntry
 
 struct HashEntry
 {
-    ElementType Element;
+    Element Element;
     enum KindOfEntry Info;
 };
 
@@ -27,6 +26,20 @@ struct HashTbl
     Cell *TheCells;
 };
 
+int Ocupados(HashTable h){
+    return h->Ocupados;
+}
+int tablesize(HashTable h){
+    return (h->TableSize);
+}
+
+int SearchPalavra( char* Key, HashTable H) {
+    Index P = Find(Key, H);
+    if (H->TheCells[P].Info == Legitimate && strcmp(H->TheCells[P].Element, Key) == 0){
+        return 1;
+    }
+    return 0;
+}
 
 int isPrime(int number)
 {
@@ -99,7 +112,7 @@ HashTable InitializeTable(int TableSize)
 
 
     H->TableSize = NextPrime(TableSize);
-
+    H->Ocupados=0;
     /* Allocate array of Cells */
     H->TheCells = malloc(sizeof(Cell) * H->TableSize);
 
@@ -118,11 +131,9 @@ HashTable InitializeTable(int TableSize)
 
 
 
-Position Find(char *Key, HashTable H)
+Index Find(char *Key, HashTable H)
 {
     Index CurrentPos;
-    int CollisionNum;
-
 
     CurrentPos = Hash(Key, H->TableSize);
     
@@ -169,7 +180,7 @@ HashTable Rehash(HashTable H)
 
 HashTable Insert(char *Key, HashTable H)
 {
-    Position Pos = Find(Key, H);
+    Index Pos = Find(Key, H);
 
     
    
@@ -183,7 +194,6 @@ HashTable Insert(char *Key, HashTable H)
         
         if (LoadFactor(H)>(0.5)){
 
-            
             H = Rehash(H);
         }
     }
@@ -197,7 +207,7 @@ float LoadFactor(HashTable H) {
 
 
 
-ElementType Retrieve(Position P, HashTable H)
+Element Retrieve(Index P, HashTable H)
 {
     return H->TheCells[P].Element;
 }
@@ -232,9 +242,10 @@ void PrintTable(HashTable H)
 
 HashTable loadDic(const char *filename, HashTable h)
 {
-    h = InitializeTable(SIZE_DIC);
+    
     char str[30];
     FILE *f = fopen(filename, "r");
+    int size=0;
 
     while (fscanf(f, " %s", str) != EOF) /*Se o ficheiro nao tiver mais nada, fecha*/
     {
@@ -242,9 +253,7 @@ HashTable loadDic(const char *filename, HashTable h)
 
         h =Insert(str, h);
         h->Ocupados=0;
-
     }
-
     fclose(f);
     return h;
 }
@@ -254,10 +263,10 @@ HashTable loadDic(const char *filename, HashTable h)
 
 HashTable loadPrefix(const char *filename, HashTable prefix)
 {
-    prefix = InitializeTable(6);
+    
     char str[30],pre[30];
     FILE *f = fopen(filename, "r");
-
+    
     while (fscanf(f, " %s", str) != EOF) /*Se o ficheiro nao tiver mais nada, fecha*/
     {
         int i = 1;
@@ -270,7 +279,7 @@ HashTable loadPrefix(const char *filename, HashTable prefix)
 
             strncpy(pre, str,i);
 
-            
+
             prefix = Insert(pre, prefix);
             
             i++;
