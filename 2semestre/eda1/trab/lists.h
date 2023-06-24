@@ -2,13 +2,13 @@
 #include <stdio.h>
 #define FatalErro( Str )   fprintf( stderr, "%s\n", Str ), exit( 1 )
 
-typedef char ElementType;
+typedef char* ElementType;
 
 
 struct Node;
 typedef struct Node *PtrToNode;
-typedef PtrToNode List;
 typedef PtrToNode Position;
+typedef Position List;
 
 List CreateList();
 int IsEmpty(List L);

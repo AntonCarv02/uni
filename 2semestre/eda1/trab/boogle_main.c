@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
     int usado[4][4], coord[2][17];
     memset(usado, 0, sizeof(usado));
 
-    List result ;
+    List result = CreateList() ;
     
     HashTable WordsTable = InitializeTable(SIZE_DIC), PrefixTable = InitializeTable(SIZE_DIC);
 
@@ -57,7 +57,7 @@ void SearchBoogle(HashTable words, HashTable prefix, char game[4][4], int usado[
     coord[1][tamanho]=y;
 
     
-    if((SearchPalavra(palavra, prefix))){
+    if((Search(palavra, prefix))){
         for (int l = -1; l < 2; l++)
         {
             for (int c = -1; c < 2; c++)
@@ -73,7 +73,7 @@ void SearchBoogle(HashTable words, HashTable prefix, char game[4][4], int usado[
     }
 
 
-    if ((SearchPalavra(palavra, words)))
+    if ((Search(palavra, words)))
     {   count++;
         printf("%s:",palavra);
         /*for (int i = 0; i<=tamanho; i++)

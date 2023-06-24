@@ -1,24 +1,24 @@
 #include "lists.h"
 
+
+
 struct Node
 {
     ElementType Element;
-    int x,y;
+    int coord[2][17];
     Position Next;
 };
+
+
 
 List CreateList()
 {   
     List L;
-    if (L != NULL)
-        DeleteList(L);
-    else
-    {
-        L = malloc(sizeof(struct Node));
-        if (L == NULL)
-            FatalErro("Out of memory!");
-        L->Next = NULL;
+    L = malloc(sizeof(struct Node));
+    if(L == NULL){
+        FatalErro("Out of memory");
     }
+    L->Next=NULL;
     return L;
 }
 
@@ -113,7 +113,7 @@ void PrintList(List L)
     Position temp = L->Next;
     while (temp!=NULL)
     {
-        printf("%d", temp->Element);
+        printf("%s", temp->Element);
         temp = temp->Next;
     }
     

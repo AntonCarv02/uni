@@ -33,7 +33,7 @@ int tablesize(HashTable h){
     return (h->TableSize);
 }
 
-int SearchPalavra( char* Key, HashTable H) {
+int Search( char* Key, HashTable H) {
     Index P = Find(Key, H);
     if (H->TheCells[P].Info == Legitimate && strcmp(H->TheCells[P].Element, Key) == 0){
         return 1;

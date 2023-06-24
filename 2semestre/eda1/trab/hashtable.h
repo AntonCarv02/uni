@@ -19,7 +19,7 @@ typedef char* Element;
 
         int Ocupados(HashTable h);
         int tablesize(HashTable h);
-        int SearchPalavra( char* Key, HashTable H);
+        int Search( char* Key, HashTable H);
         HashTable InitializeTable( int TableSize );
         void DestroyTable( HashTable H );
         Index Find( char* Key, HashTable H );
