@@ -4,7 +4,7 @@
 
 struct Node
 {
-    ElementType Element;
+    ElementType Element[17];
     int coord[2][17];
     Position Next;
 };
@@ -32,19 +32,19 @@ int IsEmpty(List L)
 
 
 
-int IsLast(Position P, List L)
+int IsLast(Position P)
 {
     return P->Next == NULL;
 }
 
 
 
-Position FindList(ElementType X, List L)
+Position FindList(ElementType X[17], List L)
 {
     Position P;
 
     P = L->Next;
-    while (P != NULL && P->Element != X)
+    while (P != NULL && strcmp(P->Element ,X)==0)
         P = P->Next;
 
     return P;
@@ -52,13 +52,13 @@ Position FindList(ElementType X, List L)
 
 
 
-void Delete(ElementType X, List L)
+void Delete(ElementType X[17], List L)
 {
     Position P, TmpCell;
 
     P = FindPrevious(X, L);
 
-    if (!IsLast(P, L)) 
+    if (!IsLast(P)) 
     {                  
         TmpCell = P->Next;
         P->Next = TmpCell->Next; 
@@ -68,27 +68,37 @@ void Delete(ElementType X, List L)
 
 
 Position
-FindPrevious(ElementType X, List L)
+FindPrevious(ElementType X[17], List L)
 {
     Position P;
 
     P = L;
-    while (P->Next != NULL && P->Next->Element != X)
+    while (P->Next != NULL && strcmp(P->Next->Element ,X)==0)
         P = P->Next;
 
     return P;
 }
 
 
-void InsertList(ElementType X, List L, Position P)
+void InsertList(ElementType X[17], int coord[2][17], List L, Position P)
 {
     Position TmpCell;
-
+    
     TmpCell = malloc(sizeof(struct Node));
     if (TmpCell == NULL)
         FatalErro("Out of space!!!");
 
-    TmpCell->Element = X;
+    strcpy( TmpCell->Element , X);
+    
+    
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = 0; j < strlen(X); j++) {   
+              
+            TmpCell->coord[i][j] = coord[i][j];     
+        }  
+    }    
+
     TmpCell->Next = P->Next;
     P->Next = TmpCell;
 }
@@ -108,15 +118,26 @@ void DeleteList(List L)
 }
 
 
-void PrintList(List L)
-{
+void PrintList(List L){
     Position temp = L->Next;
     while (temp!=NULL)
     {
-        printf("%s", temp->Element);
+        printf("%s:", temp->Element);
+        for (int i = 0; i<strlen(temp->Element); i++)
+        {   
+
+            char character=temp->Element[i];
+            
+            printf(" %c(%d,%d)",character,temp->coord[0][i],temp->coord[1][i]);
+            
+            if((i+1<strlen(temp->Element))){
+                printf(" ->");
+            }
+        }
+        printf("\n");
         temp = temp->Next;
+        
     }
-    
     
 }
 
@@ -142,5 +163,5 @@ Advance(Position P)
 ElementType
 RetrieveList(Position P)
 {
-    return P->Element;
+    return *P->Element;
 }

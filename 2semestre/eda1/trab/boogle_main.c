@@ -26,6 +26,8 @@ int main(int argc, char const *argv[])
     runBoggle(usado, WordsTable, PrefixTable,game,palavra, coord, result);
     printf("palavras encontradas: %d\n", count);
     
+    PrintList(result);
+
     return 0;
 }
 
@@ -74,9 +76,21 @@ void SearchBoogle(HashTable words, HashTable prefix, char game[4][4], int usado[
 
 
     if ((Search(palavra, words)))
-    {   count++;
-        printf("%s:",palavra);
-        /*for (int i = 0; i<=tamanho; i++)
+    {   
+        count++;
+        Position p = result;
+
+        while(!IsLast(p)){
+
+        
+            p = Advance(p);
+        }
+
+        InsertList(palavra, coord, result, p);
+
+        
+        /*printf("%s:",palavra);
+        for (int i = 0; i<=tamanho; i++)
         {   
 
             //*ADICIONAR A LISTA DE OUTPUT AQUI/
@@ -152,6 +166,9 @@ void runBoggle(int usado[4][4], HashTable words, HashTable prefix, char game[4][
         while (y < 4)
         {   
             SearchBoogle(words, prefix, game, usado, x, y, palavra, coord, result);
+            memset(usado, 0, 16); /*JUJST TO BE SAFE*/
+            memset(coord, 0, 34);
+
             y++;
         }
         x++;
