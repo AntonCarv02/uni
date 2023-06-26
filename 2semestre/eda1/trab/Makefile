@@ -1,15 +1,15 @@
-exe/boogle: bin/boogle.o bin/hashtable.o bin/lists.o
+boogle: boogle.o hashtable.o lists.o
 	gcc -o $@ $^
 
-bin/boogle.o: boogle_main.c 
+boogle.o: boogle_main.c 
 	gcc -c -o $@ $^
 
-bin/hashtable.o: hashtable.c 
+hashtable.o: hashtable.c 
 	gcc -c -o $@ $^
 
-bin/lists.o: lists.c 
+lists.o: lists.c 
 	gcc -c -o $@ $^
 
 
 clean:
-	rm -rf boogle 
+	rm -rf boogle boogle.o

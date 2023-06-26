@@ -1,24 +1,45 @@
 #include "boogle.h"
 
-int count = 0;
-
+int count = 0; // count das palavras encontradas
 
 
 int main(int argc, char const *argv[])
 {
     char game[4][4], palavra[17]="";
-    int usado[4][4], coord[2][17];
+    int usado[4][4], coord[2][17], escolha=0;
     memset(usado, 0, sizeof(usado));
 
     List result = CreateList() ;
     
     HashTable WordsTable = InitializeTable(SIZE_DIC), PrefixTable = InitializeTable(SIZE_DIC);
 
-    WordsTable = loadDic("txt/corncob_caps_2023.txt", WordsTable);
+    WordsTable = loadDic("corncob_caps_2023.txt", WordsTable);
 
-    PrefixTable = loadPrefix("txt/corncob_caps_2023.txt", PrefixTable);
+    PrefixTable = loadPrefix("corncob_caps_2023.txt", PrefixTable);
 
-    readBoggle(game, "txt/boggle0.txt");
+
+    printf("QUE BOGGLE PRETENDE USAR? 0/1/2\n");
+    scanf("%d", &escolha);
+
+    switch (escolha)
+    {
+    case 0:
+        readBoggle(game, "boggle0.txt");
+        break;
+    case 1:
+        readBoggle(game, "boggle1.txt");
+        break;
+    case 2:
+        readBoggle(game, "boggle2.txt");
+        break;
+    
+    default:
+ 
+        readBoggle(game, "boggle0.txt");
+        break;
+    }
+
+    
     showBoard(game);
     // PrintTable(PrefixTable); 
 

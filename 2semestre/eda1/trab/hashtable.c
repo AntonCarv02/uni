@@ -97,11 +97,11 @@ HashTable InitializeTable(int TableSize)
     HashTable H;
     int i;
 
-    /*if (TableSize < MinTableSize)
+    if (TableSize < MinTableSize)
     {
         printf("Table size too small");
         return NULL;
-    }*/
+    }
 
 
 
@@ -271,7 +271,7 @@ HashTable loadPrefix(const char *filename, HashTable prefix)
     {
         int i = 1;
 
-        
+               
         while (i<strlen(str))
         {   
             
