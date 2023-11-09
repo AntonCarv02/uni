@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Vacinação</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <img src="https://www.farmaciasportuguesas.pt/media/logo/default/brand-logotipo-simbolo-principal-copy_3x.png"
+            alt="Logotipo Farmácias Portuguesas" class="logo">
+        <h1>Agendamento de Vacinação Alentejo</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Página Inicial</a></li>
+                <li><a href="#">Agendar Vacinação</a></li>
+                
+            </ul>
+        </nav>
+    </header>
+    <!-- Pesquisa de Farmácias por Nome -->
+    <div>
+        <div id="procura"></div>
+        <label>Nome da Farmácia:</label>
+        <input type="text" id="nFarmacia">
+        <button onclick="searchFarmacias()">Pesquisar Farmácias</button>
+    </div>
+
+    <!-- Pesquisa de Farmácias por Tipo de Vacina -->
+    <div>
+        <div id="vacina"></div>
+        <label>Tipo de Vacina:</label>
+        <select id="tipoVacina">
+            <option value="gripe">Gripe</option>
+            <option value="covid-19">COVID-19</option>
+        </select>
+        <button onclick="searchFarmaciasByVaccine()">Pesquisar Farmácias por Vacina</button>
+    </div>
+    
+
+    <!-- Listar Farmácias -->
+    <div>
+        <div id="farmacias"></div>
+        <h2>Farmácias Encontradas:</h2>
+        <button onclick="getFarmacias()">Listar Farmácias</button>
+        
+    </div>
+    <ul class="pharmacies-list" id="lista">
+        <!-- A lista de farmácias será gerada dinamicamente aqui -->
+    </ul>
+    <ul class="pagination" id="pagination">
+        <!-- A paginação será gerada dinamicamente aqui -->
+    </ul>
+
+    <!-- Listar Agendamentos -->
+    <div>
+        <h2>Agendamentos:</h2>
+        <button onclick="listAgendamentos()">Listar Agendamentos</button>
+        <div id="agendamentos"></div>
+    </div>
+
+    <!-- Listar Programas de Vacinação -->
+    <div>
+        <h2>Programas de Vacinação:</h2>
+        <button onclick="listProgramGripe()">Listar Programas de Gripe</button>
+        <button onclick="listProgramCOVID19()">Listar Programas de COVID-19</button>
+        <div id="programasGripe"></div>
+        <div id="programasCOVID19"></div>
+    </div>
+    <footer>
+        <div class="contact">
+            <p>Contato: <a href="mailto:suporte@agendamentoalentejo.com">suporte@agendamentoalentejo.com</a></p>
+        </div>
+        <div class="credits">
+            <p>Desenvolvido por: António Carvalho e Matilde Campelo</p>
+        </div>
+        <div class="link">
+            <a href="https://www.farmaciasportuguesas.pt/">Visite Farmácias Portuguesas</a>
+        </div>
+    </footer>
+</body>
+
+<script src="script.js"></script>
+
+</html>

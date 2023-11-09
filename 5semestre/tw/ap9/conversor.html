@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>conversor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        function validateForm() {
+
+            let x = document.forms["Form"]["from"].value;
+            let y = document.forms["Form"]["to"].value;
+            let z = document.forms["Form"]["value"].value;
+
+            if (x == "") {
+                alert("Name must be filled out");
+                return false;
+            } else if (y == "") {
+                alert("Name must be filled out");
+                return false;
+            } else if (z == "") {
+                alert("Name must be filled out");
+                return false;
+            }
+        }
+        function myFunction(val) {
+            if (val.localeCompare("EUR") && val.localeCompare("USD") && val.localeCompare("GBP") && val.localeCompare("BRL")) {
+            var textNode = document.createTextNode("moeda de origem inválida: " + val); 
+            document.getElementById("alerta").appendChild(textNode);
+            }
+            
+        }
+        
+
+    </script>
+</head>
+
+<body>
+    <h1>Câmbio</h1>
+    <form name="Form" action="https://www.bportugal.pt/conversor-moeda" onsubmit="validateForm(),myFunction(this.value)" method="get">
+        <p>
+            Moeda de origem:
+            <input type="text" name="from" size="10" onchange="myFunction(this.value)">
+            Moeda final:
+            <input type="text" name="to" size="10" onchange="myFunction(this.value)">
+        </p>
+        <p>
+            Valor a converter: <span id="conv_zone"></span>
+            <input type="text" name="value" id="conv_value" value="1">
+        </p>
+
+        <input type="submit" value="converter">
+
+        <div id="alerta" style="color: red"></div>
+    </form>
+</body>
+
+</html>

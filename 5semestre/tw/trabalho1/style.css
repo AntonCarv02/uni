@@ -1,0 +1,113 @@
+/* Estilos CSS para a página */
+
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://www.anfonline.pt/_layouts/15/anf/static/images/login/background.svg');
+    background-size: cover; /* Para cobrir todo o fundo */
+    background-repeat: no-repeat; /* Para não repetir a imagem */
+}
+
+header {
+    background-color: #2abe2f;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.logo {
+    height: 40px;
+    margin-left: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+/* Estilos para o menu da barra de navegação */
+nav ul a {
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid #2abe2f;
+    border-radius: 5px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul a:hover {
+    background-color: rgb(37, 96, 31);
+    color: #fff;
+}
+
+main {
+    margin: 20px;
+}
+
+ul.pharmacies-list {
+    list-style: none;
+}
+
+ul.pharmacies-list li {
+    border: 1px solid #ccc;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f7f7f7; /* Fundo cinza claro */
+}
+
+ul.pharmacies-list li strong {
+    font-weight: bold;
+    font-size: 18px; /* Tamanho da fonte maior */
+}
+
+ul.pharmacies-list li {
+    position: relative;
+    padding-left: 30px; /* Espaço para o ícone */
+}
+
+/* Atualização do ícone para uma localização (📍) */
+ul.pharmacies-list li::before {
+    content: "📍"; 
+    margin-right: 10px;
+}
+
+ul.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+ul.pagination li {
+    margin: 0 5px;
+}
+
+footer {
+    background-color: #2abe2f;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    
+}
+
+.filter-label {
+    margin-right: 10px;
+    color: #2abe2f;
+}
+h1 {
+    font-family: 'Arial', sans-serif; /* Change to your preferred font */
+    font-size: 40px; /* Increase font size */
+    color: rgb(37, 96, 31); /* Green color */
+    text-align: center;
+    margin: 20px 0; /* Add margin for spacing */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a text shadow */
+}

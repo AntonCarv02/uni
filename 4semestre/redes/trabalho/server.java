@@ -82,7 +82,7 @@ public class server {
     public static class saveThread extends Thread {
 
         public void run() {
-            System.out.println("saving....");
+            System.out.println("a guardar....");
             persistDataRegularly();
 
         }
@@ -517,9 +517,9 @@ class ClientThread extends Thread {
                 break;
 
             default:
-                if (studentdelay < 1) {
+                if (studentdelay < 20) {
                     status = "Present";
-                } else if (studentdelay < 2) {
+                } else if (studentdelay < 45) {
                     status = "Late";
 
                 } else {

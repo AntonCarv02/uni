@@ -136,3 +136,35 @@ void PrintList(List L)
     
     
 }
+void q2(List l){
+    Position f,n,r;
+
+    f=First(l);
+    n=Advance(f);
+    while (n!=NULL) 
+    {
+        r=Advance(n);
+        n->Next=f;
+        f=n;
+        n=r;
+    }
+
+    First(l)->Next=NULL;
+    l->Next=f;
+    
+}
+
+int main(int argc, char const *argv[])
+{
+    List l=CreateList(l);
+    Insert(40,l,First(l));
+    Insert(21, l, Advance(First(l)));
+    Insert(10,l,Advance(Advance(First(l))));
+    Insert(6, l, Advance(Advance(Advance(First(l)))));
+    Insert(1,l,Advance(Advance(Advance(Advance(First(l))))));
+    PrintList(l);
+    q2(l);
+    PrintList(l);
+    return 0;
+}
+

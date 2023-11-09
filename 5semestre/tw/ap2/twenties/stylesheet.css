@@ -1,0 +1,29 @@
+
+   h1 {
+    color: red;
+    border-bottom: 1px solid red;
+  }
+
+  h2 {
+   margin-left: 100px;
+    color: gray;
+  }
+
+  p {
+   margin-left: 100px;
+   font-family: sans-serif;
+   font-size: 12px;
+ 
+   
+}
+
+em{  
+   color: navy;
+   font-weight: bold;
+}
+
+#dolla{
+   float: right;
+   margin-top: 0px;
+   margin-right:12px;
+}

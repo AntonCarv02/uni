@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Agendamento de Vacinação Alentejo</title>
+</head>
+<body>
+    <header>
+        <img src="https://www.farmaciasportuguesas.pt/media/logo/default/brand-logotipo-simbolo-principal-copy_3x.png"
+            alt="Logotipo Farmácias Portuguesas" class="logo">
+        <h1>Agendamento de Vacinação Alentejo</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Página Inicial</a></li>
+                <li><a href="#">Agendar Vacinação</a></li>
+                <li><a href="#">Farmácias Aderentes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Farmácias Aderentes</h2>
+        <label for="filter-vaccine" class="filter-label">Filtrar por vacina:</label>
+        <select id="filter-vaccine">
+            <option value="all">Todas</option>
+            <option value="gripe">Gripe</option>
+            <option value="covid19">COVID-19</option>
+        </select>
+        <label for="filter-city" class="filter-label">Filtrar por cidade:</label>
+        <input type="text" id="filter-city" placeholder="Digite a cidade">
+        <label for="filter-name-city" class="filter-label">Pesquisar por Nome ou Cidade:</label>
+        <input type="text" id="filter-name-city" placeholder="Digite o nome ou cidade">
+        <ul class="pharmacies-list" id="pharmacies-list">
+            <!-- A lista de farmácias será gerada dinamicamente aqui -->
+        </ul>
+        <ul class="pagination" id="pagination">
+            <!-- A paginação será gerada dinamicamente aqui -->
+        </ul>
+    </main>
+
+    <footer>
+        <div class="contact">
+            <p>Contato: <a href="mailto:suporte@agendamentoalentejo.com">suporte@agendamentoalentejo.com</a></p>
+        </div>
+        <div class="credits">
+            <p>Desenvolvido por: António Carvalho e Matilde Campelo</p>
+        </div>
+        <div class="link">
+            <a href="https://www.farmaciasportuguesas.pt/">Visite Farmácias Portuguesas</a>
+        </div>
+    </footer>
+
+    <script>
+        // Dados de farmácias (simulados)
+        const pharmacyData = [
+            {
+                id: 1,
+                name: "Farmácia A",
+                city: "Évora",
+                vaccines: ["gripe", "covid19"]
+            },
+            {
+                id: 2,
+                name: "Farmácia B",
+                city: "Beja",
+                vaccines: ["gripe"]
+            },
+            {
+                id: 3,
+                name: "Farmácia C",
+                city: "Portalegre",
+                vaccines: ["covid19"]
+            },
+            {
+                id: 4,
+                name: "Farmácia D",
+                city: "Évora",
+                vaccines: ["gripe"]
+            },
+            // Adicione mais farmácias conforme necessário
+        ];
+
+        const pharmaciesList = document.getElementById("pharmacies-list");
+        const filterVaccine = document.getElementById("filter-vaccine");
+        const filterCity = document.getElementById("filter-city");
+        const filterNameCity = document.getElementById("filter-name-city");
+        const pagination = document.getElementById("pagination");
+
+        // Configuração da paginação
+        const itemsPerPage = 5;
+        let currentPage = 1;
+
+        // Função para exibir a lista de farmácias
+        function displayPharmacies() {
+            const selectedVaccine = filterVaccine.value;
+            const selectedCity = filterCity.value.toLowerCase();
+            const nameCityFilter = filterNameCity.value.toLowerCase();
+
+            // Filtrar farmácias com base nos critérios selecionados
+            const filteredPharmacies = pharmacyData.filter((pharmacy) => {
+                if (selectedVaccine !== "all" && !pharmacy.vaccines.includes(selectedVaccine)) {
+                    return false;
+                }
+                if (selectedCity && !pharmacy.city.toLowerCase().includes(selectedCity)) {
+                    return false;
+                }
+                if (nameCityFilter && !pharmacy.name.toLowerCase().includes(nameCityFilter) && !pharmacy.city.toLowerCase().includes(nameCityFilter)) {
+                    return false;
+                }
+                return true;
+            });
+
+            // Calcular o índice inicial e final para a paginação
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            // Exibir farmácias da página atual
+            pharmaciesList.innerHTML = filteredPharmacies.slice(startIndex, endIndex).map(pharmacy => `
+                <li data-pharmacy-id="${pharmacy.id}">
+                    <strong>${pharmacy.name}</strong><br>
+                    Cidade: ${pharmacy.city}<br>
+                    Vacinas: ${pharmacy.vaccines.join(", ")}
+                </li>
+            `).join('');
+
+            // Atualizar a paginação
+            updatePagination(filteredPharmacies.length);
+        }
+
+        // Função para atualizar a paginação
+        function updatePagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+            pagination.innerHTML = pageNumbers.map(page => `
+                <li><a href="#" onclick="changePage(${page})">${page}</a></li>
+            `).join('');
+        }
+
+        // Função para mudar de página
+        function changePage(page) {
+            currentPage = page;
+            displayPharmacies();
+        }
+
+        // Event listeners para filtros
+        filterVaccine.addEventListener("change", displayPharmacies);
+        filterCity.addEventListener("input", displayPharmacies);
+        filterNameCity.addEventListener("input", displayPharmacies);
+
+        // Exibir a lista inicial
+        displayPharmacies();
+    </script>
+</body>
+</html>
