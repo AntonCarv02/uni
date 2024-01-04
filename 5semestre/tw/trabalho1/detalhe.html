@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Vacinação</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <img src="https://www.farmaciasportuguesas.pt/media/logo/default/brand-logotipo-simbolo-principal-copy_3x.png"
+            alt="Logotipo Farmácias Portuguesas" class="logo">
+        <h1>Agendamento de Vacinação Alentejo</h1>
+        <nav>
+            <ul>
+                <li><a href="../trabalho1/trabalho.html">Pagina Inicial</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+
+
+    <main>
+
+
+
+        <!-- adicionar Agendamentos -->
+        <div id="titleContainer">
+            <h2>Agendamentos:</h2>
+        </div>
+
+        <div id="formsContainer">
+            <div id="utenteRemoveContainer">
+                <div id="utenteFormContainer">
+                    <label for="utenteNumber">Número de Utente:</label>
+                    <input type="text" id="utenteNumber">
+                    <button id="btagend" onclick="listAgendamentos()"> Mostrar Agendamentos</button>
+                </div>
+
+                <div id="RemoverAgendaContainer">
+                    <label for="codigoagenda">Código de Agendamento:</label>
+                    <input type="text" id="codigoagenda" >
+                    <button id="remove" onclick="removeAgendamento()"> Remover Agendamentos</button>
+                </div>
+            </div>
+        </div>
+
+
+        <table border="1" id="agendamentos">
+            <thead>
+                <tr>
+                    <th>Utente ID</th>
+                    <th>Farmácia ID</th>
+                    <th>Vacina</th>
+                    <th>Data</th>
+                    <th>Código</th>
+                </tr>
+            </thead>
+
+            <tbody id="tableBody">
+                <!-- conteudo da tabela  -->
+            </tbody>
+        </table>
+
+    </main>
+
+
+    <footer>
+        <div class="footer-info">
+            <p class="contact"><span>Contatos:</span>
+                <a href="mailto:l51483@alunos.uevora.pt"> l51483@alunos.uevora.pt</a>
+                <a href="l51702@alunos.uevora.pt">l51702@alunos.uevora.pt</a>
+            </p>
+        </div>
+        <div class="credits">
+            <p>Desenvolvido por: António Carvalho e Matilde Campelo</p>
+        </div>
+        <div class="link">
+            <a href="https://www.farmaciasportuguesas.pt/">Visite Farmácias Portuguesas</a>
+        </div>
+
+
+
+    </footer>
+
+</body>
+
+<script src="script.js"></script>
+
+</html>

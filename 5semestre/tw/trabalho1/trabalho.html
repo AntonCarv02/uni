@@ -6,75 +6,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendamento de Vacinação</title>
     <link rel="stylesheet" type="text/css" href="style.css">
-    
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
-<body>
+<body onload="getFarmacias(0)">
     <header>
         <img src="https://www.farmaciasportuguesas.pt/media/logo/default/brand-logotipo-simbolo-principal-copy_3x.png"
             alt="Logotipo Farmácias Portuguesas" class="logo">
         <h1>Agendamento de Vacinação Alentejo</h1>
         <nav>
             <ul>
-                <li><a href="#">Página Inicial</a></li>
-                <li><a href="#">Agendar Vacinação</a></li>
+                <li><a href="../trabalho1/gestao.html">Acesso Reservado</a></li>
+                
+                <li><a href="../trabalho1/detalhe.html">Área Utente</a></li>
                 
             </ul>
         </nav>
     </header>
-    <!-- Pesquisa de Farmácias por Nome -->
-    <div>
-        <div id="procura"></div>
-        <label>Nome da Farmácia:</label>
-        <input type="text" id="nFarmacia">
-        <button onclick="searchFarmacias()">Pesquisar Farmácias</button>
-    </div>
+    <main>
+        <!-- passar este div para a pag do detalhe-->
+        <div class="detalhes" id="detalhesFarmacia" style="display: none;">
+            <h2>Detalhes da Farmácia</h2>
+            <p id="detalhesNome"></p>
+            <p id="detalhesEmail"></p>
+            <p id="detalhesLocalidade"></p>
+            <p id="detalhesRua"></p>
+            <p id="detalhesCodigoPostal"></p>
+            <p id="detalhesTelefone"></p>
+            <p id="detalhesServicos"></p>
+            <button onclick="document.getElementById(`detalhesFarmacia`).style.display = `none`">Fechar detalhes</button>
+        
 
-    <!-- Pesquisa de Farmácias por Tipo de Vacina -->
-    <div>
-        <div id="vacina"></div>
-        <label>Tipo de Vacina:</label>
+            <div id="addAgendamentoForm">
+                <label for="utenteNumber">Utente:</label>
+                <input type="text" id="utenteNumber">
+                
+                <select id="tipovac">
+                    <!-- o dropdown de vacinas será gerado dinamicamente aqui -->
+                </select>
+
+                <label for="datauser"> Selecionar data :</label>
+                <input type="date" id="datauser">
+                
+                <button id="addAgendamentoBtn" onclick="addAgendamento()">Adicionar Agendamento</button>
+                <label id="response"></label>
+            </div>
+        
+        </div>
+
+        <!-- Pesquisa de Farmácias por Tipo de Vacina -->
+    
+        
+        <label class="filter-label">Tipo de Vacina:</label>
         <select id="tipoVacina">
+            
+            <option value="all">Todas</option>
             <option value="gripe">Gripe</option>
             <option value="covid-19">COVID-19</option>
-        </select>
-        <button onclick="searchFarmaciasByVaccine()">Pesquisar Farmácias por Vacina</button>
-    </div>
+        </select>   
+       
+        <!-- Pesquisa de Farmácias por Nome -->
     
-
-    <!-- Listar Farmácias -->
-    <div>
-        <div id="farmacias"></div>
-        <h2>Farmácias Encontradas:</h2>
-        <button onclick="getFarmacias()">Listar Farmácias</button>
+       
+        <label class="filter-label">Nome da Farmácia:</label>
+        <input type="text" id="nFarmacia" placeholder="Digite a cidade ou nome">
+        <button onclick="searchFarmacias()">Pesquisar Farmácias</button>
         
-    </div>
-    <ul class="pharmacies-list" id="lista">
-        <!-- A lista de farmácias será gerada dinamicamente aqui -->
-    </ul>
-    <ul class="pagination" id="pagination">
-        <!-- A paginação será gerada dinamicamente aqui -->
-    </ul>
+        <button onclick="searchFarmaciasByVaccine()">Pesquisar Farmácias por Vacina</button>
+        
+        <!-- Listar Farmácias -->
+   
+        <button id="farmacias" onclick="getFarmacias(0)">Mostrar Farmácias</button>
+        
 
-    <!-- Listar Agendamentos -->
-    <div>
-        <h2>Agendamentos:</h2>
-        <button onclick="listAgendamentos()">Listar Agendamentos</button>
-        <div id="agendamentos"></div>
-    </div>
+        <h2>Farmácias Encontradas:</h2>
+        
+         <ul class="pharmacies-list" id="lista">
+            <!-- A lista de farmácias será gerada dinamicamente aqui -->
+            
+        </ul>
+        
+       
+        
+        <div class=" botoes">
 
-    <!-- Listar Programas de Vacinação -->
-    <div>
-        <h2>Programas de Vacinação:</h2>
-        <button onclick="listProgramGripe()">Listar Programas de Gripe</button>
-        <button onclick="listProgramCOVID19()">Listar Programas de COVID-19</button>
-        <div id="programasGripe"></div>
-        <div id="programasCOVID19"></div>
-    </div>
+            <button style="visibility:hidden" id="ant" onclick="prevpage() ">anterior</button>
+            <button style="visibility:hidden" id="prox" onclick="nextpage()">proxima</button>
+        
+        </div>
+        
+        
+    </main>
+
     <footer>
-        <div class="contact">
-            <p>Contato: <a href="mailto:suporte@agendamentoalentejo.com">suporte@agendamentoalentejo.com</a></p>
+        <div class="footer-info">
+            <p class="contact"><span>Contatos:</span>
+                <a href="mailto:l51483@alunos.uevora.pt"> l51483@alunos.uevora.pt</a>  
+                <a  href="l51702@alunos.uevora.pt">l51702@alunos.uevora.pt</a></p>
         </div>
         <div class="credits">
             <p>Desenvolvido por: António Carvalho e Matilde Campelo</p>
@@ -82,7 +111,11 @@
         <div class="link">
             <a href="https://www.farmaciasportuguesas.pt/">Visite Farmácias Portuguesas</a>
         </div>
+        
+        
+    
     </footer>
+
 </body>
 
 <script src="script.js"></script>

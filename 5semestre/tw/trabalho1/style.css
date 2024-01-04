@@ -1,22 +1,65 @@
-/* Estilos CSS para a página */
-
 body {
     font-family: 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url('https://www.anfonline.pt/_layouts/15/anf/static/images/login/background.svg');
-    background-size: cover; /* Para cobrir todo o fundo */
-    background-repeat: no-repeat; /* Para não repetir a imagem */
+    background: url('pexels-thirdman-5922088.jpg') no-repeat center center fixed, linear-gradient(to bottom, #4CAF50, #ffffff);
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
 }
 
 header {
-    background-color: #2abe2f;
+    background-color: rgba(42, 190, 47, 0.9); 
     color: white;
     text-align: center;
     padding: 10px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+
+/* Estilos para o rodapé */
+footer {
+    background-color: rgba(42, 190, 47, 0.85); 
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+    position: relative;
+}
+
+
+.footer-info {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.footer-info p {
+    margin: 5px;
+}
+
+.footer-info span {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+
+.footer-info .address::before {
+    content: "🏢";
+}
+
+.footer-info .contact::before {
+    content: "📧";
+}
+
+
+
+.footer-info span:hover::before {
+    transform: scale(1.2); 
 }
 
 .logo {
@@ -34,7 +77,7 @@ nav ul li {
     margin-right: 20px;
 }
 
-/* Estilos para o menu da barra de navegação */
+
 nav ul a {
     text-decoration: none;
     color: #fff;
@@ -51,6 +94,7 @@ nav ul a:hover {
 
 main {
     margin: 20px;
+    
 }
 
 ul.pharmacies-list {
@@ -62,20 +106,21 @@ ul.pharmacies-list li {
     margin: 5px;
     padding: 10px;
     cursor: pointer;
-    background-color: #f7f7f7; /* Fundo cinza claro */
+    background-color: #f7f7f7; 
+    
 }
 
 ul.pharmacies-list li strong {
     font-weight: bold;
-    font-size: 18px; /* Tamanho da fonte maior */
+    font-size: 18px;
 }
 
 ul.pharmacies-list li {
     position: relative;
-    padding-left: 30px; /* Espaço para o ícone */
+    padding-left: 30px; 
 }
 
-/* Atualização do ícone para uma localização (📍) */
+
 ul.pharmacies-list li::before {
     content: "📍"; 
     margin-right: 10px;
@@ -88,26 +133,377 @@ ul.pagination {
 }
 
 ul.pagination li {
-    margin: 0 5px;
+    margin:  5px;
 }
 
-footer {
+.filter-label {
+    margin-right: 5px;
+    color: #2abe2f;
+    
+}
+h1 {
+    font-family: 'Arial', sans-serif; 
+    font-size: 40px; 
+    color: rgb(37, 96, 31); 
+    text-align: center;
+    margin: 20px 0; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+}
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; 
+}
+
+.botoes button {
+    margin-right: 10px;
+    position: static;
+    padding: 10px 20px;
+    border-radius: 10px;
     background-color: #2abe2f;
     color: white;
-    text-align: center;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.botoes button:hover {
+    background-color: #255f1f;
+    color: white;
+}
+
+
+
+.detalhes {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.detalhes h2 {
+    color: #255f1f;
+    font-size: 24px;
+}
+
+.detalhes p {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.detalhes button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #2abe2f;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.detalhes button:hover {
+    background-color: #255f1f;
+    color: white;
+}
+
+
+button {
+    padding: 10px 20px;
+    background-color: #ccc; 
+    color: black; 
+    transition: background-color 0.3s, color 0.3s;
+    margin-bottom: 10px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+button:hover {
+    background-color: #a9a9a9; 
+   
+}
+
+label.filter-label,
+label.filter-label-dropdown,
+input#nFarmacia,
+select#tipoVacina {
+    color: #333; 
+   
+}
+#listbuttons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+select#tipoVacina {
+    background-color: #dcdcdc; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    transition: background-color 0.3s, color 0.3s;
+}
+
+
+select#tipoVacina:hover {
+    background-color: #a9a9a9; 
+    color: white;
+}
+
+
+button.search-by-vaccine {
+    background-color: #007BFF; 
+    color: white;
+    border: 1px solid #0056b3; 
+}
+
+
+button.search-by-vaccine:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+/*Gráfico */
+#barChart {
+    max-width: 300px; 
+    max-height: 150px; 
+    width: 100%;
+    height: auto;
+    width: 50vw; 
+    height: auto;
+    margin: 0 auto;
+    
+}
+
+#agendamentos {
+    width: 50%;
+    margin: 20px auto; 
+    border-collapse: collapse;
+    background-color: #29bd2e;
+    color: white; 
+    border-radius: 10px; 
+}
+
+#agendamentos th, #agendamentos td {
     padding: 10px;
+    text-align: center; 
+    
+}
+#agendamentos tr:hover{
+    background-color: #0f8213;
+    cursor: pointer;
+
+}
+
+#utenteFormContainer {
+    display: flex;
+    align-items: center;
+}
+
+#utenteNumber {
+    margin-right: 10px;
+}
+
+#btagend {
+    width: auto;
+    border: none;
+    border-radius: 5px;
+    background-color: #ccc;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#btagend:hover {
+    background-color: #a9a9a9;
+}
+
+#RemoverAgendaContainer {
+    display: flex;
+    align-items: center;
+}
+
+#codigoagenda {
+    margin-right: 10px;
+}
+
+#remove {
+    width: auto;
+    border: none;
+    border-radius: 5px;
+    background-color: #ccc;
+    color: black;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#remove:hover {
+    background-color: #a9a9a9;
+}
+
+
+#formsContainer {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+#utenteRemoveContainer {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#utenteFormContainer,
+#RemoverAgendaContainer {
+    max-width: 400px;
+    margin: 10px;
+}
+
+#utenteFormContainer label,
+#RemoverAgendaContainer label {
+    width: 100%;
+    text-align: left;
+    margin-right: 0;
+}
+
+#utenteFormContainer input,
+#RemoverAgendaContainer input {
+    width: calc(100% - 20px);
+    margin-bottom: 5px; 
+}
+
+#utenteFormContainer button,
+#RemoverAgendaContainer button {
+    width: 100%;
+    margin-top: 5px; 
+}
+
+#utenteFormContainer,
+#RemoverAgendaContainer {
+    max-width: 500px;
+    padding: 20px;
+    
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 10px;
+    position: relative; 
+}
+
+#utenteFormContainer::before,
+#RemoverAgendaContainer::before {
+    content: ""; 
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.7); 
+    border-radius: 10px; 
+    z-index: -1; 
+}
+
+#formsContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+   ;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+#utenteFormContainer,
+#RemoverAgendaContainer {
+    width: 100%;
+    max-width: 400px; /* Defina a largura máxima desejada para cada conteúdo */
+    margin-bottom: 20px;
+    position: relative;
+}
+
+#utenteFormContainer::before,
+#RemoverAgendaContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    z-index: -1;
+}
+
+#titleContainer {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#titleContainer h2 {
+    color: #255f1f;
+    font-size: 24px;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center; 
+    background-color: rgba(255, 255, 255, 0.8); 
+    padding: 20px;
+    border-radius: 10px; 
+    border: 1px solid #ddd;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filter-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
     
 }
 
 .filter-label {
-    margin-right: 10px;
-    color: #2abe2f;
+    margin-right: 10px; 
 }
-h1 {
-    font-family: 'Arial', sans-serif; /* Change to your preferred font */
-    font-size: 40px; /* Increase font size */
-    color: rgb(37, 96, 31); /* Green color */
+
+input[type="text"] {
+    padding: 5px;
+}
+
+#boxContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px; 
+    padding: 20px;
+    border-radius: 10px; 
+ }
+
+.servicos {
+    margin-bottom: 5px; }
+
+#buttonContainer {
     text-align: center;
-    margin: 20px 0; /* Add margin for spacing */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Add a text shadow */
+    margin-top: 10px; 
+}
+
+#adicionarFarmacia {
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+    text-align: center;
+    
 }

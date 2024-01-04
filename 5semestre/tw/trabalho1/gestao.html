@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento de Vacinação</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <header>
+        <img src="https://www.farmaciasportuguesas.pt/media/logo/default/brand-logotipo-simbolo-principal-copy_3x.png"
+            alt="Logotipo Farmácias Portuguesas" class="logo">
+        <h1>Gestão de Farmacias Alentejo</h1>
+        <nav>
+            <ul>
+                <li><a href="../trabalho1/trabalho.html">Página Inicial</a></li>
+
+            </ul>
+        </nav>
+    </header>
+
+
+    <main>
+
+
+        <!-- Listar Programas de Vacinação -->
+        <div id="listbuttons">
+            <button id="programasGripe" onclick="listProgramGripe()">Listar Programas de Gripe</button>
+
+            <button id="programasCOVID19" onclick="listProgramCOVID19()">Listar Programas de COVID-19</button>
+
+        </div>
+
+
+        <div class="filter-container">
+
+            <div class="filter-input">
+                <label class="filter-label" for="farmname">Nome de Farmacia:</label>
+                <input type="text" id="farmname">
+            </div>
+            <div class="filter-input">
+                <label class="filter-label" for="farmname">ID de Farmacia:</label>
+                <input type="text" id="farmid">
+            </div>
+            <div id="boxContainer">
+                <div>
+                    <input type="checkbox" class="servicos" id="covid" value="covid-19">
+                    <label for="covid"> Covid-19</label>
+                    <br>
+                    <input type="checkbox" class="servicos" id="gripe" value="gripe">
+                    <label for="gripe">Gripe</label>
+
+                </div>
+
+                <div id="buttonContainer">
+                    <button id="addfarmacia" onclick="addFarmacia()">Adicionar farmácia</button>
+                </div>
+            </div>
+
+
+
+            <div class="centered-content">
+                <label class="filter-label" for="removeid">ID da Farmacia a remover:</label>
+                <input type="text" id="removeid" value=""><br><br>
+                <button id="removefarmacia" onclick="removeFarmacia()">Remover farmacia</button>
+                <label id="removeresponse"></label>
+                
+                <ul class="pharmacies-list" id="listagestao">
+                    <!-- A lista de farmácias será gerada dinamicamente aqui -->
+
+                </ul>
+            </div>
+        </div>
+
+
+
+
+        </ul>
+
+        <canvas id="barChart" width="400" height="200"></canvas>
+
+    </main>
+
+
+
+    <footer>
+        <div class="footer-info">
+            <p class="contact"><span>Contatos:</span>
+                <a href="mailto:l51483@alunos.uevora.pt"> l51483@alunos.uevora.pt</a>
+                <a href="l51702@alunos.uevora.pt">l51702@alunos.uevora.pt</a>
+            </p>
+        </div>
+        <div class="credits">
+            <p>Desenvolvido por: António Carvalho e Matilde Campelo</p>
+        </div>
+        <div class="link">
+            <a href="https://www.farmaciasportuguesas.pt/">Visite Farmácias Portuguesas</a>
+        </div>
+
+
+
+    </footer>
+
+</body>
+
+<script src="script.js"></script>
+
+</html>

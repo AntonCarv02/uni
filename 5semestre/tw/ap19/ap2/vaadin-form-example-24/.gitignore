@@ -1,0 +1,15 @@
+target/
+.idea/
+.classpath
+.project
+.settings/
+
+node_modules/
+webpack.generated.js
+webpack.config.js
+.DS_Store
+/package-lock.json
+/package.json
+/pnpm-lock.yaml
+/pnpmfile.js
+frontend/generated/
