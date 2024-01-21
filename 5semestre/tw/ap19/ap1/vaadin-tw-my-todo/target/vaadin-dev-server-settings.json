@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/frontend/generated/jar-resources",
+  "staticOutput": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/target/classes/META-INF/VAADIN/config",
+  "frontendBundleOutput": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/target/classes/META-INF/VAADIN/webapp",
+  "devBundleOutput": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/src/main/dev-bundle/config",
+  "jarResourcesFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/frontend/generated/jar-resources",
+  "themeName": "mytodo",
+  "clientServiceWorkerSource": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/target/sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}

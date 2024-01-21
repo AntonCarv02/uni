@@ -334,7 +334,6 @@ function searchFarmacias() {
 
 }
 
-// Função para remover caracteres acentuados
 function removeAccents(text) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
@@ -702,6 +701,8 @@ let myChart = null;
 function createBarChart(localidadeCount) {
     let localidades = Object.keys(localidadeCount);
     let counts = Object.values(localidadeCount);
+    console.log(localidades);
+    console.log(counts)
 
     let backgroundColors = counts.map(() => "rgba(144, 238, 144, 0.5)");
     let borderColors = counts.map(() => "rgba(60, 179, 113, 1)");

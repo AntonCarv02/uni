@@ -1,0 +1,16 @@
+{
+  "productionMode": false,
+  "eagerServerLoad": false,
+  "npmFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo",
+  "node.version": "v20.9.0",
+  "node.download.root": "https://nodejs.org/dist/",
+  "frontendFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/frontend",
+  "connect.javaSourceFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/src/main/java",
+  "javaResourceFolder": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/src/main/resources",
+  "connect.applicationProperties": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/src/main/resources/application.properties",
+  "connect.openApiFile": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/target/generated-resources/openapi.json",
+  "project.frontend.generated": "/home/antonio/Documentos/uni/5semestre/tw/ap19/ap1/vaadin-tw-my-todo/frontend/generated",
+  "pnpm.enable": false,
+  "require.home.node": false,
+  "build.folder": "target"
+}

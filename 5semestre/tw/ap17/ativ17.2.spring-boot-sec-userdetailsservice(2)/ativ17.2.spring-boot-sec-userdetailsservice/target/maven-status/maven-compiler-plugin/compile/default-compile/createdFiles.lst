@@ -1,0 +1,8 @@
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/rowmapper/UserRowMapper.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/SpringSecurityFormBasedJdbcUserDetailsServiceAuthApp.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/dao/UserDao.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/controller/SpringSecurityController.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/service/UserAuthService.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/config/SecurityConfig.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/config/DatabaseConfig.class
+com/roytuts/spring/boot/security/form/based/jdbc/userdetailsservice/auth/model/User.class
