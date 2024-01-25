@@ -1,0 +1,397 @@
+.error {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.msg {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+#input-box {
+    width: 500px;
+    padding: 20px;
+    margin: 50px auto;
+    background: #f5f5f5;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 10px;
+    border: 1px solid #000;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+.click a {
+    color:#3498db  ;
+}
+#input-box form .input-text{
+    margin-top: 10px;
+
+}
+
+.form-input *{
+    margin-top: 10px;
+}
+.form-input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.user-input *{
+margin-top:10px;
+}
+
+.admin{
+    display: flex;
+
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+main {
+
+    flex: 1;
+    margin-bottom: 10px;
+    display: flex;
+    margin-top: 10px;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
+main h2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+
+}
+h1{
+    display: flex;
+    justify-content: center;
+}
+
+body {
+    background-image: url('../images/fundo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    display: flex;
+
+    overflow: auto;
+}
+
+header {
+    padding: 10px;
+    text-align: center;
+    background-color: #005200;
+    color: #000;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.logo {
+    width: 200px;
+
+}
+
+.logo img {
+    max-width: 100%;
+    /* This ensures the image won't exceed its original size */
+    height: auto;
+}
+
+header h1 {
+    color: #FABC41;
+    font-size: 36px;
+    margin-top: 20px;
+
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+
+nav ul a {
+    text-decoration: none;
+    color: #ffffff;
+    border: 2px solid #003d00;
+    border-radius: 7px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav ul a:hover {
+    background-color: #003d00;
+    color: #fff;
+}
+
+
+
+
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.radio {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.radio-group {
+
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+}
+
+.radio-subgroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: -5%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    /* Inherit color from parent */
+}
+
+
+footer {
+    background-color: #005200;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    box-shadow: 0px -5px 15px rgba(0, 0, 0, 0.2);
+    margin-top: 50px;
+    width: 100%;
+}
+
+.footer-info p {
+    margin: 5px;
+}
+
+.footer-info span {
+    margin-right: 5px;
+}
+
+.footer-info .contact .cont::before {
+    content: "📧";
+}
+
+.footer-info .contact {
+    Display: flex;
+    flex-direction: column;
+}
+
+.footer-info span:hover::before {
+    transform: scale(1.2);
+}
+
+.footer-info p {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+/* Style the table header */
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr {
+
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Apply some hover effect to highlight rows on mouseover */
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #e78e00;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #F7A400;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 5px;
+}
+
+/* Add hover effect */
+button:hover {
+    background-color: #e78e00;
+}
+
+
+input[type="submit"] {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border: 2px solid #e78e00;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #F7A400;
+    transition: background-color 0.3s, color 0.3s;
+    
+}
+
+input[type="submit"]:hover {    background-color: #e78e00;
+
+
+}
+
+
+input[type="date"] {
+    padding: 9px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+input[type="datetime-local"] {
+    padding: 9px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Additional styles as needed */
+}
+
+input[type="password"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Additional styles as needed */
+}
+
+/* Add focus styles for better user experience */
+input[type="text"]:focus {
+    outline: none;
+    /* Remove the default focus outline */
+    border-color: #3498db;
+    /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    /* Add a subtle box shadow on focus */
+}
+
+#inputdetails {
+    margin-bottom: 20px;
+}
+
+#inscrever {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.regevento{
+    display: flex;
+    flex-direction: column;
+
+}
+.regtempo{
+    display: flex;
+    flex-direction: column;
+}
+
+.form input{
+    margin: 5 0 5 0;
+}
+
+
+select {
+    display: block;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+  }
